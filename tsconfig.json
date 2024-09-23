@@ -5,5 +5,7 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   }
 }
