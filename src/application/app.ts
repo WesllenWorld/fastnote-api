@@ -1,5 +1,5 @@
 import express, { json } from "express"
-import router from "./routes/routes"
+import router from "../routes/routes"
 import cors from 'cors'
 
 function createApp() {
@@ -11,6 +11,7 @@ function createApp() {
 
     // Add your own middleware here
     const corsOptions = {
+
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
     }
     app.use(cors(/*corsOptions*/))
