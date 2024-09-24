@@ -1,8 +1,8 @@
-import { Note } from "../entities/note-model"
+import { Note } from "../models/note"
 
 
 
-
+/*
 export const findAllNotes = async (): Promise<Note[]> => {
 
 
@@ -16,4 +16,5 @@ export const findNoteById = async (id: string): Promise<Note | undefined> => {
 
 export const addNote = async (newNote: Note ) => {
     database.push(newPlayer)
-  }
+}
+    */

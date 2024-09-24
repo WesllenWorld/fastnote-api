@@ -1,4 +1,4 @@
-import { Note } from "../entities/note-model"
+import { Note } from "../models/note"
 import * as notesRepository from "../repositories/notes-repository"
 import * as httpResponse from "../utils/http-helper"
 import * as crypto from 'crypto'
@@ -49,20 +49,12 @@ export const addNoteService = async (newNote: Note) => {
     if (Object.keys(newNote).length === 0) {
         response = await httpResponse.badRequest()
     } else {
-        //gerar uuid aqui e comparar
-        let uuid = crypto.randomUUID()
-        const data = await notesRepository.findNoteById(uuid)
-        
-        if (data) {
-            response = await httpResponse.conflict()
-        } else {
-            await notesRepository.addNote(newNote)
-            response = await httpResponse.created()
-        }
+        await notesRepository.addNote(newNote)
     }
     return response
 }
 
+/*
 export const deletePlayerService = async (id: number) => {
     let response = null
 
@@ -90,4 +82,4 @@ export const updatePlayerService = async (id: number, bodyValue: StatisticsModel
     }
 
     return response
-}
+}*/
