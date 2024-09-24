@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 
-import { User } from "./entities/User.entity";
-import { Tag } from "./entities/Tag.entity";
-import { Note } from "./entities/Note.entity";
+import { User } from "./entities/user";
+import { Tag } from "./entities/tag";
+import { Note } from "./entities/note";
 
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
   process.env;
