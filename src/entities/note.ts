@@ -6,6 +6,9 @@ import {
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
+    ManyToMany,
+    JoinTable,
+    JoinColumn,
 } from "typeorm";
 
 @Entity({name: "notes"})
@@ -21,12 +24,23 @@ export class Note {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @Column()
+    @Column({
+        length: 1000,
+        nullable: true,
+        type: "varchar",
+    })
     content: string;
 
-    @Column()
+    @ManyToMany(() => Tag, { 
+        eager: true // Carrega as tags automaticamente ao buscar a nota
+    })
+    @JoinTable() // Cria uma tabela intermediária para armazenar as associações
     tags: Tag[];
 
-    @ManyToOne(() => User, user => user.id)
-    user: User
+    @ManyToOne(() => User, user => user.id, {
+        nullable: false, 
+        onDelete: "CASCADE" 
+    })
+    @JoinColumn({ name: "user_id" }) // Define a coluna user_id como chave estrangeira
+    user: User;
 }

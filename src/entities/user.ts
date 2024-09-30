@@ -16,12 +16,26 @@ export class User {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @Column()
+    @Column({
+        length: 100,
+        nullable: false,
+        type: "varchar",
+    })
     name: string;
 
-    @Column()
+    @Column({
+            length: 255,
+            nullable: false,
+            unique: true,
+            type: "varchar",
+        }
+    )
     email: string;
 
-    @Column()
+    @Column({
+        length: 255,
+        nullable: false,
+        type: "varchar",
+    })
     password: string
 }

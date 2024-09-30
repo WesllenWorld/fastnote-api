@@ -5,6 +5,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
+    JoinColumn,
 } from "typeorm";
 
 @Entity({name: "tags"})
@@ -20,12 +21,25 @@ export class Tag {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @Column()
+    @Column({
+        length: 100,
+        nullable: false,
+        type: "varchar",
+    })
     name: string;
 
-    @Column()
+    @Column({
+        length: 7,
+        nullable: false,
+        type: "varchar",
+    })
     color: string;
 
-    @ManyToOne(() => User, user => user.id)
+    @ManyToOne(() => User, user => user.id, {
+        eager: true,
+        nullable: false,
+        onDelete: "CASCADE",
+    })
+    @JoinColumn({ name: "user_id" })
     user: User
 }
