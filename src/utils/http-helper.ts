@@ -8,10 +8,10 @@ export const ok = async (data: any): Promise<HttpResponse> => {
     }
 }
 
-export const created = async (): Promise<HttpResponse> => {
+export const created = async (data: any): Promise<HttpResponse> => {
     return {
         statusCode: StatusCode.CREATED,
-        body: 'successful'
+        body: data
     }
 }
 
@@ -22,17 +22,17 @@ export const noContent = async (): Promise<HttpResponse> => {
     }
 }
 
-export const conflict = async (): Promise<HttpResponse> => {
+export const conflict = async (data: any): Promise<HttpResponse> => {
     return {
         statusCode: StatusCode.CONFLICT,
-        body: 'Already exists'
+        body: data
     }
 }
 
-export const badRequest = async (): Promise<HttpResponse> => {
+export const badRequest = async (data: any): Promise<HttpResponse> => {
     return {
         statusCode: StatusCode.BAD_REQUEST,
-        body: 'bad request'
+        body: data
     }
 }
 

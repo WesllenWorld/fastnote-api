@@ -2,6 +2,8 @@ import { Router } from 'express'
 
 //controllers por entidade
 import * as notesController from '../controllers/notes-controller'
+import * as tagsController from '../controllers/tags-controller'
+import * as usersController from '../controllers/users-controller'
 
 const router = Router()
 
@@ -22,7 +24,7 @@ router.put('/tags/:id', tagsController.updateTag)
 //user
 router.get('/users', usersController.getUsers)
 router.get('/users/:id', usersController.getUserById)
-router.post('/users', usersController.postUser)
+router.post('/users', usersController.postUserController)
 router.delete('/users/:id', usersController.deleteUser)
 router.put('/users/:id', usersController.updateUser)
 

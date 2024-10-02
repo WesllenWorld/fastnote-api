@@ -2,10 +2,10 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    
+
 } from "typeorm";
 
-@Entity({name: "users"})
+@Entity({ name: "users" })
 export class User {
 
     constructor(name: string, email: string, password: string) {
@@ -13,6 +13,7 @@ export class User {
         this.email = email;
         this.password = password;
     }
+
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
@@ -24,11 +25,11 @@ export class User {
     name: string;
 
     @Column({
-            length: 255,
-            nullable: false,
-            unique: true,
-            type: "varchar",
-        }
+        length: 255,
+        nullable: false,
+        unique: true,
+        type: "varchar",
+    }
     )
     email: string;
 
