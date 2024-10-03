@@ -9,7 +9,7 @@ export const findAllNotes = async (): Promise<Note[]> => {
     return []
 }
 
-export const findNotesByUser = async (id: string): Promise<Note | undefined> => {
+export const findNotesByUser = async (userId: string): Promise<Note | undefined> => {
     //const note = noteList.find(note => note.noteId === id)
     //return note
     return undefined

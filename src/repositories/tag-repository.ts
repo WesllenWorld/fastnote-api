@@ -9,14 +9,14 @@ export const getAllTagsByUserId = async (userId: string): Promise<Tag[]> => {
     return tags
 }
 
-export const getAllTagsById = async (id: string): Promise<Tag[]> => {
-    const tags = await tagRepository.find({ where: { id } })
+export const getTagByUserIdAndName = async (userId: string, tagName: string): Promise<Tag | null> => {
+    const tag = await tagRepository.findOne({ where: { user: { id: userId }, name: tagName } })
 
-    return tags
+    return tag
 }
 
-export const getTagById = async (id: string): Promise<Tag | null> => {
-    const tag = await tagRepository.findOne({ where: { id } })
+export const getTagById = async (tagId: string): Promise<Tag | null> => {
+    const tag = await tagRepository.findOne({ where: { id: tagId } })
     return tag
 }
  

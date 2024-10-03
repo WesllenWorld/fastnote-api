@@ -1,85 +1,91 @@
+import { validate } from "class-validator"
+import { CreateTagDTO } from "../dtos/create-tag-dto"
 import { Tag } from "../entities/tag"
-//import * as notesRepository from "../repositories/notes-repository"
-import * as httpResponse from "../utils/http-helper"
+import * as userRepository from "../repositories/user-repository"
+import * as tagRepository from "../repositories/tag-repository"
+import * as httpresponseToController from "../utils/http-helper"
 
 
 
-export const getNotesService = async () => {
+export const getTagsByUserService = async () => {
+    /*
     const data = await notesRepository.findNotes()
-    let response = null
+    let responseToController = null
 
     if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpresponseToController.noContent()
     } else {
-        response = await httpResponse.ok(data)
+        responseToController = await httpresponseToController.ok(data)
     }
 
-    return response
+    return responseToController*/
 }
 
-export const getNotesByUserService = async (userId: number) => {
-    const data = await notesRepository.findNotesByUser()
-    let response = null
+export const getTagByIdService = async (id: string) => {
+    /*const data = await notesRepository.findNoteById(id)
+    let responseToController = null
 
     if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpresponseToController.noContent()
     } else {
-        response = await httpResponse.ok(data)
+        responseToController = await httpresponseToController.ok(data)
     }
 
-    return response
+    return responseToController*/
 }
 
-export const getNoteByIdService = async (id: string) => {
-    const data = await notesRepository.findNoteById(id)
-    let response = null
+export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) => {
+    let responseToController = null
 
-    if (!data) {
-        response = await httpResponse.noContent()
+    const validationErrors = await validate(newTagDTO)
+
+    if (validationErrors.length > 0) {
+        responseToController = await httpresponseToController.badRequest('Invalid data provided')
     } else {
-        response = await httpResponse.ok(data)
+        const existingUser = await userRepository.getUserById(userId)
+        if (!existingUser) {
+            responseToController = await httpresponseToController.notFound('User not found')
+        } else {
+
+            const tagExists = await tagRepository.getTagByUserIdAndName(userId, newTagDTO.name)
+            if (tagExists) {
+                responseToController = await httpresponseToController.conflict('Tag already exists')
+            } else {
+                const tag = new Tag(newTagDTO.name, newTagDTO.color, existingUser)
+                await tagRepository.postTag(tag)
+                responseToController = await httpresponseToController.created('Tag created successfully')
+            }
+        }
     }
-
-    return response
-}
-
-export const addNoteService = async (newNote: Note) => {
-    let response = null
-
-    if (Object.keys(newNote).length === 0) {
-        response = await httpResponse.badRequest()
-    } else {
-        await notesRepository.addNote(newNote)
-    }
-    return response
+    return responseToController
 }
 
 /*
 export const deletePlayerService = async (id: number) => {
-    let response = null
+    let responseToController = null
 
     const data = await playersRepository.findPlayerById(id)
     if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpresponseToController.noContent()
     } else {
         playersRepository.deletePlayer(id)
-        response = await httpResponse.ok('Successfully deleted')
+        responseToController = await httpresponseToController.ok('Successfully deleted')
     }
-    return response
+    return responseToController
 }
 
 export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
-    let response = null
+    let responseToController = null
     const data = await playersRepository.findPlayerById(id)
 
     if (Object.keys(bodyValue).length === 0) {
-        response = await httpResponse.badRequest()
+        responseToController = await httpresponseToController.badRequest()
     } else if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpresponseToController.noContent()
     } else {
         const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)
-        response = await httpResponse.ok(updatedPlayer)
+        responseToController = await httpresponseToController.ok(updatedPlayer)
     }
 
-    return response
+    return responseToController
 }*/

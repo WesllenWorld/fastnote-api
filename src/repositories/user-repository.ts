@@ -9,8 +9,8 @@ export const getAllUsers = async (): Promise<User[]> => {
     return []
 }
 
-export const getUserById = async (id: string): Promise<User | null> => {
-    const user = await userRepository.findOne({ where: { id } })
+export const getUserById = async (userId: string): Promise<User | null> => {
+    const user = await userRepository.findOne({ where: {id: userId}  })
     return user
 }
 
