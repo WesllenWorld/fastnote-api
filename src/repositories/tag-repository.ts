@@ -21,6 +21,6 @@ export const getTagById = async (tagId: string): Promise<Tag | null> => {
 }
  
 export const postTag = async (newTag: Tag) => {
-    await tagRepository.insert(newTag)
+    await tagRepository.save(newTag)
 }
    

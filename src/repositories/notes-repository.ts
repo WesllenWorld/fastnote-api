@@ -16,6 +16,6 @@ export const findNotesByUser = async (userId: string): Promise<Note | undefined>
 }
  
 export const postNote = async (newNote: Note ) => {
-    await noteRepository.insert(newNote)
+    await noteRepository.save(newNote)
 }
    

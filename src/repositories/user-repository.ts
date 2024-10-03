@@ -20,6 +20,6 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 }
  
 export const postUser = async (newUser: User) => {
-    await userRepository.insert(newUser)
+    await userRepository.save(newUser)
 }
    
