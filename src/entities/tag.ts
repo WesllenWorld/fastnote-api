@@ -29,7 +29,7 @@ export class Tag {
     name: string;
 
     @Column({
-        length: 7,
+        length: 6,
         nullable: false,
         type: "varchar",
     })

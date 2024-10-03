@@ -36,9 +36,9 @@ export const badRequest = async (data: any): Promise<HttpResponse> => {
     }
 }
 
-export const notFound = async (): Promise<HttpResponse> => {
+export const notFound = async (data: any): Promise<HttpResponse> => {
     return {
         statusCode: StatusCode.NOT_FOUND,
-        body: 'not found'
+        body: data
     }
 }

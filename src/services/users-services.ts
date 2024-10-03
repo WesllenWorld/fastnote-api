@@ -43,18 +43,18 @@ export const postUserService = async (newUserDTO: CreateUserDTO) => {
 
     if (validationErrors.length > 0) {
         responseToController = await httpResponse.badRequest('Invalid data provided')
-    }
-
-    const existingUser = await userRepository.getUserByEmail(newUserDTO.email)
-
-    if (existingUser) {
-        responseToController = await httpResponse.conflict("Email already exists")
     } else {
-        //rounds for computational cost (and security)
-        const saltRounds = 10
-        const newUser = new User(newUserDTO.name, newUserDTO.email, await bcrypt.hash(newUserDTO.password, saltRounds))
-        await userRepository.postUser(newUser)
-        responseToController = await httpResponse.created("User created successfully")
+        const existingUser = await userRepository.getUserByEmail(newUserDTO.email)
+
+        if (existingUser) {
+            responseToController = await httpResponse.conflict("Email already exists")
+        } else {
+            //rounds for computational cost (and security)
+            const saltRounds = 10
+            const newUser = new User(newUserDTO.name, newUserDTO.email, await bcrypt.hash(newUserDTO.password, saltRounds))
+            await userRepository.postUser(newUser)
+            responseToController = await httpResponse.created("User created successfully")
+        }
     }
     return responseToController
 

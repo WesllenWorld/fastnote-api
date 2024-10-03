@@ -1,20 +1,21 @@
-import { Note } from "../models/note"
+import { Note } from "../entities/note"
+import { AppDataSource } from "../db/data-source"
 
+const noteRepository = AppDataSource.getRepository(Note)
 
-
-/*
 export const findAllNotes = async (): Promise<Note[]> => {
 
 
-    return noteList
+    return []
 }
 
-export const findNoteById = async (id: string): Promise<Note | undefined> => {
-    const note = noteList.find(note => note.noteId === id)
-    return note
+export const findNotesByUser = async (id: string): Promise<Note | undefined> => {
+    //const note = noteList.find(note => note.noteId === id)
+    //return note
+    return undefined
 }
-
-export const addNote = async (newNote: Note ) => {
-    database.push(newPlayer)
+ 
+export const postNote = async (newNote: Note ) => {
+    await noteRepository.insert(newNote)
 }
-    */
+   

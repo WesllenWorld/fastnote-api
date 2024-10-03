@@ -1,7 +1,12 @@
-import { Note } from "../models/note"
+import { validate } from "class-validator"
+import { CreateNoteDTO } from "../dtos/create-note-dto"
+import { Note } from "../entities/note"
+import { Tag } from "../entities/tag"
 import * as notesRepository from "../repositories/notes-repository"
+import * as userRepository from "../repositories/user-repository"
+import * as tagRepository from "../repositories/tag-repository"
 import * as httpResponse from "../utils/http-helper"
-import * as crypto from 'crypto'
+
 
 
 export const getNotesService = async () => {
@@ -17,8 +22,8 @@ export const getNotesService = async () => {
     return response
 }
 
-export const getNotesByUserService = async (userId: number) => {
-    const data = await notesRepository.findAllNotes()
+export const getNotesByUserService = async (userId: string) => {
+    const data = await notesRepository.findNotesByUser(userId)
     let response = null
 
     if (!data) {
@@ -31,7 +36,7 @@ export const getNotesByUserService = async (userId: number) => {
 }
 
 export const getNoteByIdService = async (id: string) => {
-    const data = await notesRepository.findNoteById(id)
+    const data = await notesRepository.findNotesByUser(id)
     let response = null
 
     if (!data) {
@@ -43,15 +48,44 @@ export const getNoteByIdService = async (id: string) => {
     return response
 }
 
-export const addNoteService = async (newNote: Note) => {
-    let response = null
+export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO) => {
+    let responseToController = null
 
-    if (Object.keys(newNote).length === 0) {
-        response = await httpResponse.badRequest()
+    const validationErrors = await validate(newNoteDTO)
+
+    if (validationErrors.length > 0) {
+        responseToController = await httpResponse.badRequest('Invalid data provided')
     } else {
-        await notesRepository.addNote(newNote)
+        const existingUser = await userRepository.getUserById(userId)
+        if (!existingUser) {
+            responseToController = await httpResponse.notFound("User not found")
+        } else {
+            let tags: Tag[]
+            if (newNoteDTO.tags.length === 0) {
+                tags = []
+            } else {
+                //validar tags
+                tags = await tagRepository.getAllTagsByUserId(newNoteDTO.userId)
+                tags = tags.filter(tag => newNoteDTO.tags.includes(tag.id))
+
+                const foundTagIds = tags.map(tag => tag.id);
+                const missingTags = newNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId));
+
+                if (missingTags.length > 0) {
+                    responseToController = await httpResponse.notFound(`Tags with the following IDs were not found: ${missingTags.join(', ')}`);
+                }
+            }
+
+            if (!responseToController) {
+                const newNote = new Note(newNoteDTO.content, tags, existingUser)
+                await notesRepository.postNote(newNote)
+                responseToController = await httpResponse.created("Note created successfully")
+            }
+
+        }
+
     }
-    return response
+    return responseToController
 }
 
 /*

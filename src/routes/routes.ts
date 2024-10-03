@@ -8,9 +8,9 @@ import * as usersController from '../controllers/users-controller'
 const router = Router()
 
 //notes
-router.get('/notes', notesController.getNotes) 
-router.get('/notes/:id', notesController.getNoteByUserId) 
-router.get('/notes', notesController.postNote) 
+router.get('/notes/:user-id', notesController.getAllNotesByUserId) 
+router.get('/notes/:user-id/:note-id', notesController.getNoteByUserId) 
+router.post('/notes/:userId', notesController.postNote) 
 router.delete('/notes/:id', notesController.deleteNote)
 router.put('/notes/:id', notesController.updateNote)
 

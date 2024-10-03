@@ -26,13 +26,14 @@ export class Note {
 
     @Column({
         length: 1000,
-        nullable: true,
+        nullable: false,
         type: "varchar",
     })
     content: string;
 
     @ManyToMany(() => Tag, { 
-        eager: true // Carrega as tags automaticamente ao buscar a nota
+        eager: true, // Carrega as tags automaticamente ao buscar a nota
+        nullable: true
     })
     @JoinTable() // Cria uma tabela intermediária para armazenar as associações
     tags: Tag[];
