@@ -62,8 +62,7 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
         } else {
             let tags: Tag[]
             if (newNoteDTO.tags.length === 0) {
-                tags = []
-                console.log("No tags")
+                tags = []                
             } else {
                 //validar tags
                 tags = await tagRepository.getAllTagsByUserId(newNoteDTO.userId)

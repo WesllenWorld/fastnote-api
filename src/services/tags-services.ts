@@ -49,7 +49,7 @@ export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) =>
 
             const tagExists = await tagRepository.getTagByUserIdAndName(userId, newTagDTO.name)
             if (tagExists) {
-                responseToController = await httpresponseToController.conflict('Tag already exists')
+                responseToController = await httpresponseToController.conflict(`Tag ${tagExists.name} already exists`)
             } else {
                 const tag = new Tag(newTagDTO.name, newTagDTO.color, existingUser)
                 await tagRepository.postTag(tag)
