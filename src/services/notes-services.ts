@@ -12,12 +12,8 @@ export const getAllNotesByUserIdService = async (userId: string) => {
     const data = await notesRepository.getAllNotesByUserIdRepository(userId)
     let response = null
 
-    if (data.length === 0) {
-        response = await httpResponse.ok([])
-    } else {
-        const notesDTOs = data.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
-        response = await httpResponse.ok(notesDTOs)
-    }
+    const notesDTOs = data.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
+    response = await httpResponse.ok(notesDTOs)
 
     return response
 }
