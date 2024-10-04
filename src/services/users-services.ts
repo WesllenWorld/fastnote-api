@@ -1,35 +1,25 @@
-import { validate } from "class-validator"
+import { isUUID, validate } from "class-validator"
 import { CreateUserDTO } from "../dtos/create-user-dto"
 import { User } from "../entities/user"
 import * as userRepository from "../repositories/user-repository"
 import * as httpResponse from "../utils/http-helper"
 import * as bcrypt from "bcrypt"
 
-
-export const getUsersService = async () => {
-    const data = await userRepository.getAllUsersRepository()
-    let response = null
-
-    if (!data) {
-        response = await httpResponse.noContent()
-    } else {
-        response = await httpResponse.ok(data)
-    }
-
-    return response
-}
-
 export const getUserByIdService = async (userId: string) => {
-    const data = await userRepository.getUserByIdRepository(userId)
-    let response = null
-
-    if (!data) {
-        response = await httpResponse.noContent()
+    let responseToController = null
+    if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        response = await httpResponse.ok(data)
-    }
+        
+        const data = await userRepository.getUserByIdRepository(userId)
 
-    return response
+        if (!data) {
+            responseToController = await httpResponse.noContent()
+        } else {
+            responseToController = await httpResponse.ok(data)
+        }
+    }
+    return responseToController
 }
 
 export const postUserService = async (newUserDTO: CreateUserDTO) => {
@@ -42,18 +32,27 @@ export const postUserService = async (newUserDTO: CreateUserDTO) => {
     const validationErrors = await validate(newUserDTO)
 
     if (validationErrors.length > 0) {
-        responseToController = await httpResponse.badRequest('Invalid data provided')
-    } else {
-        const existingUser = await userRepository.getUserByEmailRepository(newUserDTO.email)
+        const errorMessages = validationErrors.flatMap((error) => {
+            // Return first error message of each constraint
+            return error.constraints ? Object.values(error.constraints) : []
+        });
 
-        if (existingUser) {
-            responseToController = await httpResponse.conflict("Email already exists")
+        responseToController = await httpResponse.badRequest(errorMessages)
+    } else {
+        if (validationErrors.length > 0) {
+            responseToController = await httpResponse.badRequest('Invalid data provided')
         } else {
-            //rounds for computational cost (and security)
-            const saltRounds = 10
-            const newUser = new User(newUserDTO.name, newUserDTO.email, await bcrypt.hash(newUserDTO.password, saltRounds))
-            await userRepository.postUserRepository(newUser)
-            responseToController = await httpResponse.created("User created successfully")
+            const existingUser = await userRepository.getUserByEmailRepository(newUserDTO.email)
+
+            if (existingUser) {
+                responseToController = await httpResponse.conflict("Email already exists")
+            } else {
+                //rounds for computational cost (and security)
+                const saltRounds = 10
+                const newUser = new User(newUserDTO.name, newUserDTO.email, await bcrypt.hash(newUserDTO.password, saltRounds))
+                await userRepository.postUserRepository(newUser)
+                responseToController = await httpResponse.created("User created successfully")
+            }
         }
     }
     return responseToController
@@ -75,46 +74,46 @@ async function createUser(newUserData: User) {
 
 
     if (Object.keys(newPlayer).length === 0) {
-        response = await httpResponse.badRequest()
+        responseToController = await httpResponse.badRequest()
     } else {
         const data = await playersRepository.findPlayerById(newPlayer.id)
 
         if (data) {
-            response = await httpResponse.conflict()
+            responseToController = await httpResponse.conflict()
         } else {
             await playersRepository.addPlayer(newPlayer)
-            response = await httpResponse.created()
+            responseToController = await httpResponse.created()
         }
     }
-    return response*/
+    return responseToController*/
 }
 
 /*
 export const deletePlayerService = async (id: number) => {
-    let response = null
+    let responseToController = null
 
     const data = await playersRepository.findPlayerById(id)
     if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpResponse.noContent()
     } else {
         playersRepository.deletePlayer(id)
-        response = await httpResponse.ok('Successfully deleted')
+        responseToController = await httpResponse.ok('Successfully deleted')
     }
-    return response
+    return responseToController
 }
 
 export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
-    let response = null
+    let responseToController = null
     const data = await playersRepository.findPlayerById(id)
 
     if (Object.keys(bodyValue).length === 0) {
-        response = await httpResponse.badRequest()
+        responseToController = await httpResponse.badRequest()
     } else if (!data) {
-        response = await httpResponse.noContent()
+        responseToController = await httpResponse.noContent()
     } else {
         const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)
-        response = await httpResponse.ok(updatedPlayer)
+        responseToController = await httpResponse.ok(updatedPlayer)
     }
 
-    return response
+    return responseToController
 }*/
