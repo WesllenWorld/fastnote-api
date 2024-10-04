@@ -60,13 +60,10 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
         if (!existingUser) {
             responseToController = await httpResponse.notFound("User not found")
         } else {
-            let tags: Tag[]
-            if (newNoteDTO.tags.length === 0) {
-                tags = []                
-            } else {
-                //validar tags
-                tags = await tagRepository.getAllTagsByUserId(newNoteDTO.userId)
-                tags = tags.filter(tag => newNoteDTO.tags.includes(tag.id))
+            let tags: Tag[] = [];
+            if (newNoteDTO.tags.length > 0) {
+                // Busca as tags com base no userId e nos tagIds passados
+                tags = await tagRepository.getTagsByUserIdAndTagIds(newNoteDTO.userId, newNoteDTO.tags);
 
                 const foundTagIds = tags.map(tag => tag.id);
                 const missingTags = newNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId));
