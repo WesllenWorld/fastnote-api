@@ -4,13 +4,13 @@ import { In } from "typeorm"
 
 const tagRepository = AppDataSource.getRepository(Tag)
 
-export const getAllTagsByUserId = async (userId: string): Promise<Tag[]> => {
+export const getAllTagsByUserIdRepository = async (userId: string): Promise<Tag[]> => {
     const tags = await tagRepository.find({ where: { user: { id: userId } } })
 
     return tags
 }
 
-export const getTagsByUserIdAndTagIds = async (userId: string, tagIds: string[]): Promise<Tag[]> => {
+export const getTagsByUserIdAndTagIdsRepository = async (userId: string, tagIds: string[]): Promise<Tag[]> => {
     const tags = await tagRepository.find({
         where: {
             id: In(tagIds),  // Verifica se o id está na lista de tagIds
@@ -20,18 +20,18 @@ export const getTagsByUserIdAndTagIds = async (userId: string, tagIds: string[])
     return tags;
 }
 
-export const getTagByUserIdAndName = async (userId: string, tagName: string): Promise<Tag | null> => {
+export const getTagByUserIdAndNameRepository = async (userId: string, tagName: string): Promise<Tag | null> => {
     const tag = await tagRepository.findOne({ where: { user: { id: userId }, name: tagName } })
 
     return tag
 }
 
-export const getTagById = async (tagId: string): Promise<Tag | null> => {
+export const getTagByIdRepository = async (tagId: string): Promise<Tag | null> => {
     const tag = await tagRepository.findOne({ where: { id: tagId } })
     return tag
 }
  
-export const postTag = async (newTag: Tag) => {
+export const postTagRepository = async (newTag: Tag) => {
     await tagRepository.save(newTag)
 }
    

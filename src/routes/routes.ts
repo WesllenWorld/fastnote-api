@@ -8,25 +8,24 @@ import * as usersController from '../controllers/users-controller'
 const router = Router()
 
 //notes
-router.get('/notes/:userId', notesController.getAllNotesByUserId) 
-router.get('/notes/:userId/:noteId', notesController.getNoteByUserId) 
-router.post('/notes/:userId', notesController.postNote) 
-router.delete('/notes/:userId/noteId', notesController.deleteNote)
-router.put('/notes/:userId/noteId', notesController.updateNote)
+router.get('/notes/:userId', notesController.getAllNotesByUserIdController) 
+router.get('/notes/:userId/:noteId', notesController.getNoteByUserIdController) 
+router.post('/notes/:userId', notesController.postNoteController) 
+router.delete('/notes/:userId/noteId', notesController.deleteNoteController)
+router.put('/notes/:userId/noteId', notesController.updateNoteController)
 
 //tag
-router.get('/tags/:userId', tagsController.getTags)
-router.get('/tags/:userId/:tagId', tagsController.getTagById)
-router.post('/tags/:userId', tagsController.postTag)
-router.delete('/tags/:userId/:tagId', tagsController.deleteTag)
-router.put('/tags/:userId/:tagId', tagsController.updateTag)
+router.get('/tags/:userId', tagsController.getAllTagsByUserIdController)
+router.get('/tags/:userId/:tagId', tagsController.getTagByIdController)
+router.post('/tags/:userId', tagsController.postTagController)
+router.delete('/tags/:userId/:tagId', tagsController.deleteTagByNameController)
+router.put('/tags/:userId/:tagId', tagsController.updateTagController)
 
 //user
-router.get('/users', usersController.getUsers)
-router.get('/users/:id', usersController.getUserById)
+router.get('/users/:id', usersController.getUserByIdController)
 router.post('/users', usersController.postUserController)
-router.delete('/users/:userId', usersController.deleteUser)
-router.put('/users/:userId', usersController.updateUser)
+router.delete('/users/:userId', usersController.deleteUserByIdController)
+router.put('/users/:userId', usersController.updateUserController)
 
 
 export default router

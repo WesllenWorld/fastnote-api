@@ -7,7 +7,7 @@ import * as bcrypt from "bcrypt"
 
 
 export const getUsersService = async () => {
-    const data = await userRepository.getAllUsers()
+    const data = await userRepository.getAllUsersRepository()
     let response = null
 
     if (!data) {
@@ -20,7 +20,7 @@ export const getUsersService = async () => {
 }
 
 export const getUserByIdService = async (userId: string) => {
-    const data = await userRepository.getUserById(userId)
+    const data = await userRepository.getUserByIdRepository(userId)
     let response = null
 
     if (!data) {
@@ -44,7 +44,7 @@ export const postUserService = async (newUserDTO: CreateUserDTO) => {
     if (validationErrors.length > 0) {
         responseToController = await httpResponse.badRequest('Invalid data provided')
     } else {
-        const existingUser = await userRepository.getUserByEmail(newUserDTO.email)
+        const existingUser = await userRepository.getUserByEmailRepository(newUserDTO.email)
 
         if (existingUser) {
             responseToController = await httpResponse.conflict("Email already exists")
@@ -52,7 +52,7 @@ export const postUserService = async (newUserDTO: CreateUserDTO) => {
             //rounds for computational cost (and security)
             const saltRounds = 10
             const newUser = new User(newUserDTO.name, newUserDTO.email, await bcrypt.hash(newUserDTO.password, saltRounds))
-            await userRepository.postUser(newUser)
+            await userRepository.postUserRepository(newUser)
             responseToController = await httpResponse.created("User created successfully")
         }
     }

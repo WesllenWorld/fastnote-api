@@ -3,15 +3,7 @@ import * as usersServices from '../services/users-services'
 import { CreateUserDTO } from "../dtos/create-user-dto"
 
 
-export const getUsers = async (request:Request, response:Response) => {
-    
-}
-
-export const getUserByUserId = async (request:Request, response:Response) => {
-    
-}
-
-export const getUserById = async (request:Request, response:Response) => {
+export const getUserByIdController = async (request:Request, response:Response) => {
     
 }
 
@@ -24,10 +16,10 @@ export const postUserController = async (request:Request, response:Response) => 
     } 
 }
 
-export const deleteUser = async (request:Request, response:Response) => {
+export const deleteUserByIdController = async (request:Request, response:Response) => {
     
 }
 
-export const updateUser = async (request:Request, response:Response) => {
+export const updateUserController = async (request:Request, response:Response) => {
     
 }

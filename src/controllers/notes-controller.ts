@@ -2,17 +2,18 @@ import { Request, Response } from "express"
 import * as notesServices from '../services/notes-services'
 import { CreateNoteDTO } from "../dtos/create-note-dto"
 
-export const getAllNotesByUserId = async (request:Request, response:Response) => {
-    const httpResponse = await notesServices.getNotesService()
+export const getAllNotesByUserIdController = async (request:Request, response:Response) => {
+    const userId = request.params.userId
+    const httpResponse = await notesServices.getAllNotesByUserIdService(userId)
     return response.status(httpResponse.statusCode).json(httpResponse.body)
 
 }
 
-export const getNoteByUserId = async (request:Request, response:Response) => {
+export const getNoteByUserIdController = async (request:Request, response:Response) => {
     
 }
 
-export const postNote = async (request:Request, response:Response) => {
+export const postNoteController = async (request:Request, response:Response) => {
     const userId = request.params.userId
     const newNote = new CreateNoteDTO(request.body.content, request.body.tags, request.body.userId)
     const httpResponse = await notesServices.postNoteService(userId, newNote)
@@ -22,10 +23,10 @@ export const postNote = async (request:Request, response:Response) => {
     } 
 }
 
-export const deleteNote = async (request:Request, response:Response) => {
+export const deleteNoteController = async (request:Request, response:Response) => {
     
 }
 
-export const updateNote = async (request:Request, response:Response) => {
+export const updateNoteController = async (request:Request, response:Response) => {
     
 }

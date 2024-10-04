@@ -42,17 +42,17 @@ export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) =>
     if (validationErrors.length > 0) {
         responseToController = await httpresponseToController.badRequest('Invalid data provided')
     } else {
-        const existingUser = await userRepository.getUserById(userId)
+        const existingUser = await userRepository.getUserByIdRepository(userId)
         if (!existingUser) {
             responseToController = await httpresponseToController.notFound('User not found')
         } else {
 
-            const tagExists = await tagRepository.getTagByUserIdAndName(userId, newTagDTO.name)
+            const tagExists = await tagRepository.getTagByUserIdAndNameRepository(userId, newTagDTO.name)
             if (tagExists) {
                 responseToController = await httpresponseToController.conflict(`Tag ${tagExists.name} already exists`)
             } else {
                 const tag = new Tag(newTagDTO.name, newTagDTO.color, existingUser)
-                await tagRepository.postTag(tag)
+                await tagRepository.postTagRepository(tag)
                 responseToController = await httpresponseToController.created('Tag created successfully')
             }
         }

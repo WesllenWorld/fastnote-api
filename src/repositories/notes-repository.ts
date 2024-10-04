@@ -3,19 +3,19 @@ import { AppDataSource } from "../db/data-source"
 
 const noteRepository = AppDataSource.getRepository(Note)
 
-export const findAllNotes = async (): Promise<Note[]> => {
+export const getAllNotesByUserIdRepository = async (userId: string): Promise<Note[]> => {
 
 
     return []
 }
 
-export const findNotesByUser = async (userId: string): Promise<Note | undefined> => {
+export const getNotesByUserRepository = async (userId: string): Promise<Note | undefined> => {
     //const note = noteList.find(note => note.noteId === id)
     //return note
     return undefined
 }
  
-export const postNote = async (newNote: Note ) => {
+export const postNoteRepository = async (newNote: Note ) => {
     await noteRepository.save(newNote)
 }
    
