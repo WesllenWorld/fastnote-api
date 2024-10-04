@@ -6,20 +6,17 @@ import * as notesRepository from "../repositories/notes-repository"
 import * as userRepository from "../repositories/user-repository"
 import * as tagRepository from "../repositories/tag-repository"
 import * as httpResponse from "../utils/http-helper"
+import { NoteDTO } from "../dtos/note-dto"
 
 export const getAllNotesByUserIdService = async (userId: string) => {
-    //const userExists = await userRepository.getUserByIdRepository(userId)
-    //if (!userExists) {
-    //    return await httpResponse.notFound("User not found")
-    //}
-
     const data = await notesRepository.getAllNotesByUserIdRepository(userId)
     let response = null
 
-    if (!data) {
-        response = await httpResponse.noContent()
+    if (data.length === 0) {
+        response = await httpResponse.ok([])
     } else {
-        response = await httpResponse.ok(data)
+        const notesDTOs = data.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
+        response = await httpResponse.ok(notesDTOs)
     }
 
     return response

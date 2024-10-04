@@ -25,7 +25,7 @@ export const postTagController = async (request: Request, response: Response) =>
     }
 }
 
-export const deleteTagByNameController = async (request: Request, response: Response) => {
+export const deleteTagByIdController = async (request: Request, response: Response) => {
 
 }
 
