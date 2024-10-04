@@ -10,7 +10,10 @@ export const getAllNotesByUserIdController = async (request:Request, response:Re
 }
 
 export const getNoteByUserIdController = async (request:Request, response:Response) => {
-    
+    const userId = request.params.userId
+    const noteId = request.params.noteId
+    const httpResponse = await notesServices.getNoteByUserIdService(userId, noteId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const postNoteController = async (request:Request, response:Response) => {

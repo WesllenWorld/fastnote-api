@@ -18,16 +18,17 @@ export const getAllNotesByUserIdService = async (userId: string) => {
     return response
 }
 
-export const getNoteByIdService = async (id: string) => {
-    const data = await notesRepository.getNotesByUserRepository(id)
+export const getNoteByUserIdService = async (userId: string, noteId: string) => {
+    const data = await notesRepository.getNoteByUserIdRepository(userId, noteId)
     let response = null
 
     if (!data) {
-        response = await httpResponse.noContent()
+        response = await httpResponse.notFound('Note not found');
     } else {
-        response = await httpResponse.ok(data)
+        const noteDTO = new NoteDTO(data.id, data.content, data.tags.map(tag => tag.id));
+        response = await httpResponse.ok(noteDTO);
     }
-
+    
     return response
 }
 

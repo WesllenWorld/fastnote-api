@@ -12,13 +12,12 @@ export const getAllNotesByUserIdRepository = async (userId: string): Promise<Not
     return notes
 }
 
-export const getNotesByUserRepository = async (userId: string): Promise<Note | undefined> => {
-    //const note = noteList.find(note => note.noteId === id)
+export const getNoteByUserIdRepository = async (userId: string, noteId: string): Promise<Note | null> => {
+    const note = await noteRepository.findOne({ where: { id: noteId, user: { id: userId } } })
     //return note
-    return undefined
+    return note
 }
- 
-export const postNoteRepository = async (newNote: Note ) => {
+
+export const postNoteRepository = async (newNote: Note) => {
     await noteRepository.save(newNote)
 }
-   
