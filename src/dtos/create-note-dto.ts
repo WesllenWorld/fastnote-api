@@ -15,6 +15,6 @@ export class CreateNoteDTO {
     tags: string[] = [];
 
     @IsUUID()
-    @IsNotEmpty({ message: "User ID is required" })
+    @IsNotEmpty({ message: "User ID in note is required" })
     userId: string;
 }

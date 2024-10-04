@@ -8,14 +8,14 @@ export class CreateTagDTO {
         this.userId = userId
     }
 
-    @IsNotEmpty({ message: "name is required" })
+    @IsNotEmpty({ message: "Name is required" })
     name: string;
 
-    @IsNotEmpty({ message: "color is required" })
+    @IsNotEmpty({ message: "Color is required" })
     @Matches(/^([A-Fa-f0-9]{6})$/, { message: "Invalid color" })
     color: string
 
     @IsUUID()
-    @IsNotEmpty({ message: "User ID is required" })
+    @IsNotEmpty({ message: "User ID in tag is required" })
     userId: string;
 }
