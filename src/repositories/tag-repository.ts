@@ -6,7 +6,6 @@ const tagRepository = AppDataSource.getRepository(Tag)
 
 export const getAllTagsByUserIdRepository = async (userId: string): Promise<Tag[]> => {
     const tags = await tagRepository.find({ where: { user: { id: userId } } })
-
     return tags
 }
 

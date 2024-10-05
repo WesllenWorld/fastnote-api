@@ -4,21 +4,21 @@ import { Tag } from "../entities/tag"
 import * as userRepository from "../repositories/user-repository"
 import * as tagRepository from "../repositories/tag-repository"
 import * as httpResponse from "../utils/http-helper"
+import { TagDTO } from "../dtos/tag-dto"
 
 
 
-export const getTagsByUserService = async () => {
-    /*
-    const data = await notesRepository.findNotes()
+export const getAllTagsByUserIdService = async (userId: string) => {
     let responseToController = null
 
-    if (!data) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        responseToController = await httpResponse.ok(data)
+        const tags = await tagRepository.getAllTagsByUserIdRepository(userId)
+        const tagsDTOs = tags.map(tag => new TagDTO(tag.id, tag.name, tag.color))
+        responseToController = await httpResponse.ok(tagsDTOs)
     }
-
-    return responseToController*/
+    return responseToController
 }
 
 export const getTagByIdService = async (id: string) => {

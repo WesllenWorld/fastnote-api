@@ -4,7 +4,9 @@ import { CreateTagDTO } from "../dtos/create-tag-dto"
 
 
 export const getAllTagsByUserIdController = async (request: Request, response: Response) => {
-
+    const userId = request.params.userId
+    const httpResponse = await tagsService.getAllTagsByUserIdService(userId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const getTagByUserIdController = async (request: Request, response: Response) => {

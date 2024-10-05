@@ -15,8 +15,8 @@ export const getAllNotesByUserIdService = async (userId: string) => {
     if (!isUUID(userId)) {
         responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const note = await notesRepository.getAllNotesByUserIdRepository(userId)
-        const notesDTOs = note.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
+        const notes = await notesRepository.getAllNotesByUserIdRepository(userId)
+        const notesDTOs = notes.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
         responseToController = await httpResponse.ok(notesDTOs)
     }
     return responseToController
