@@ -22,6 +22,11 @@ export const getTagsByNoteIdRepository = async (userId: string, noteId: string):
     return note
 }
 
+export const getNotesByTagIdRepository = async (userId: string, tagId: string): Promise<Note[]> => {
+    const notes = await noteRepository.find({ where: { user: { id: userId }, tags: { id: tagId } } })
+    return notes
+}
+
 export const postNoteRepository = async (newNote: Note) => {
     await noteRepository.save(newNote)
 }

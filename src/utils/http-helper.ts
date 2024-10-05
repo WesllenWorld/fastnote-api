@@ -1,5 +1,5 @@
 import { StatusCode } from "./http-status-code"
-import { HttpResponse } from "../models/http-response-model"
+import { HttpResponse } from "./http-response-model"
 
 export const ok = async (data: any): Promise<HttpResponse> => {
     return {

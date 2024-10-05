@@ -11,7 +11,7 @@ const router = Router()
 router.get('/notes/:userId', notesController.getAllNotesByUserIdController) 
 router.get('/notes/:userId/:noteId', notesController.getNoteByUserIdController)
 router.get('/notes/:userId/:noteId/tags', notesController.getTagsByNoteIdController)
-//router.get('/notes/:userId/:tagId', notesController.getNotesByTagIdController)
+router.get('/notes/:userId/tags/:tagId', notesController.getNotesByTagIdController)
 
 router.post('/notes/:userId', notesController.postNoteController) 
 

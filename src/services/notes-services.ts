@@ -56,12 +56,30 @@ export const getTagsByNoteIdService = async (userId: string, noteId: string) => 
 
         if (!note) {
             responseToController = await httpResponse.notFound('Note not found');
-        } else if (note.tags.length === 0) {
-            responseToController = await httpResponse.notFound('No tags found for this note');
-        } else {
-            const tagsDTOs = note.tags.map(tag => new TagDTO(tag.id, tag.name, tag.color));
-            responseToController = await httpResponse.ok(tagsDTOs);
         }
+        else {
+            const tagsDTO = note.tags.map(tag => new TagDTO(tag.id, tag.name, tag.color));
+            responseToController = await httpResponse.ok(tagsDTO);
+        }
+    }
+    return responseToController
+}
+
+export const getNotesByTagIdService = async (userId: string, tagId: string) => {
+    let responseToController = null
+
+    if (!isUUID(tagId)) {
+        responseToController = await httpResponse.badRequest('Invalid tag UUID provided')
+    }
+    else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
+    } else {
+        const notes = await notesRepository.getNotesByTagIdRepository(userId, tagId)
+
+
+        const notesDTOs = notes.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)));
+        responseToController = await httpResponse.ok(notesDTOs);
+
     }
     return responseToController
 }
