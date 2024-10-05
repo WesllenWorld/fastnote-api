@@ -4,19 +4,19 @@ import { User } from "../entities/user"
 import * as userRepository from "../repositories/user-repository"
 import * as httpResponse from "../utils/http-helper"
 import * as bcrypt from "bcrypt"
+import { UserDTO } from "../dtos/user-dto"
 
 export const getUserByIdService = async (userId: string) => {
     let responseToController = null
     if (!isUUID(userId)) {
         responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        
-        const data = await userRepository.getUserByIdRepository(userId)
-
-        if (!data) {
-            responseToController = await httpResponse.noContent()
+        const user = await userRepository.getUserByIdRepository(userId)
+        if (!user) {
+            responseToController = await httpResponse.notFound('User not found')
         } else {
-            responseToController = await httpResponse.ok(data)
+            const userDTO = new UserDTO(user.id, user.name, user.email) 
+            responseToController = await httpResponse.ok(userDTO)
         }
     }
     return responseToController

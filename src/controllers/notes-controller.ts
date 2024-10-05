@@ -6,7 +6,6 @@ export const getAllNotesByUserIdController = async (request: Request, response: 
     const userId = request.params.userId
     const httpResponse = await notesServices.getAllNotesByUserIdService(userId)
     return response.status(httpResponse.statusCode).json(httpResponse.body)
-
 }
 
 export const getNoteByUserIdController = async (request: Request, response: Response) => {
