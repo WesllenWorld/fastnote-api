@@ -108,7 +108,7 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
                 let tags: Tag[] = [];
                 if (newNoteDTO.tags.length > 0) {
                     // Busca as tags com base no userId e nos tagIds passados
-                    tags = await tagRepository.getTagsByUserIdAndTagIdsRepository(newNoteDTO.userId, newNoteDTO.tags);
+                    tags = await tagRepository.getTagsByUserAndTagIdRepository(newNoteDTO.userId, newNoteDTO.tags);
 
                     const foundTagIds = tags.map(tag => tag.id);
                     const missingTags = newNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId));

@@ -6,8 +6,6 @@ import * as tagRepository from "../repositories/tag-repository"
 import * as httpResponse from "../utils/http-helper"
 import { TagDTO } from "../dtos/tag-dto"
 
-
-
 export const getAllTagsByUserIdService = async (userId: string) => {
     let responseToController = null
 
@@ -21,17 +19,23 @@ export const getAllTagsByUserIdService = async (userId: string) => {
     return responseToController
 }
 
-export const getTagByIdService = async (id: string) => {
-    /*const data = await notesRepository.findNoteById(id)
+export const getTagByUserIdService = async (userId: string, tagId: string) => {
     let responseToController = null
 
-    if (!data) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(tagId)) {
+        responseToController = await httpResponse.badRequest('Invalid tag UUID provided')
+    } else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        responseToController = await httpResponse.ok(data)
+        const tag = await tagRepository.getTagByUserIdRepository(userId, tagId)
+        if (!tag) {
+            responseToController = await httpResponse.notFound('Tag not found')
+        } else {
+            const tagDTO = new TagDTO(tag.id, tag.name, tag.color)
+            responseToController = await httpResponse.ok(tagDTO)
+        }
     }
-
-    return responseToController*/
+    return responseToController
 }
 
 export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) => {

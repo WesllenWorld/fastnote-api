@@ -10,7 +10,10 @@ export const getAllTagsByUserIdController = async (request: Request, response: R
 }
 
 export const getTagByUserIdController = async (request: Request, response: Response) => {
-
+    const userId = request.params.userId
+    const tagId = request.params.tagId
+    const httpResponse = await tagsService.getTagByUserIdService(userId, tagId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const getTagByIdController = async (request: Request, response: Response) => {
