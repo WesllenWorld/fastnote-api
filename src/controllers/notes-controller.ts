@@ -16,6 +16,13 @@ export const getNoteByUserIdController = async (request:Request, response:Respon
     return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
+export const getTagsByNoteIdController = async (request:Request, response:Response) => {
+    const userId = request.params.userId
+    const noteId = request.params.noteId
+    const httpResponse = await notesServices.getTagsByNoteIdService(userId, noteId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
+}
+
 export const postNoteController = async (request:Request, response:Response) => {
     const userId = request.params.userId
     const newNote = new CreateNoteDTO(request.body.content, request.body.tags, request.body.userId)

@@ -7,6 +7,7 @@ import * as userRepository from "../repositories/user-repository"
 import * as tagRepository from "../repositories/tag-repository"
 import * as httpResponse from "../utils/http-helper"
 import { NoteDTO } from "../dtos/note-dto"
+import { TagDTO } from "../dtos/tag-dto"
 
 export const getAllNotesByUserIdService = async (userId: string) => {
     let responseToController = null
@@ -14,8 +15,8 @@ export const getAllNotesByUserIdService = async (userId: string) => {
     if (!isUUID(userId)) {
         responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const data = await notesRepository.getAllNotesByUserIdRepository(userId)
-        const notesDTOs = data.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
+        const note = await notesRepository.getAllNotesByUserIdRepository(userId)
+        const notesDTOs = note.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)))
         responseToController = await httpResponse.ok(notesDTOs)
     }
     return responseToController
@@ -30,16 +31,38 @@ export const getNoteByUserIdService = async (userId: string, noteId: string) => 
     else if (!isUUID(userId)) {
         responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const data = await notesRepository.getNoteByUserIdRepository(userId, noteId)
+        const note = await notesRepository.getNoteByUserIdRepository(userId, noteId)
 
-        if (!data) {
+        if (!note) {
             responseToController = await httpResponse.notFound('Note not found');
         } else {
-            const noteDTO = new NoteDTO(data.id, data.content, data.tags.map(tag => tag.id));
+            const noteDTO = new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id));
             responseToController = await httpResponse.ok(noteDTO);
         }
     }
-    
+    return responseToController
+}
+
+export const getTagsByNoteIdService = async (userId: string, noteId: string) => {
+    let responseToController = null
+
+    if (!isUUID(noteId)) {
+        responseToController = await httpResponse.badRequest('Invalid note UUID provided')
+    }
+    else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
+    } else {
+        const note = await notesRepository.getTagsByNoteIdRepository(userId, noteId)
+
+        if (!note) {
+            responseToController = await httpResponse.notFound('Note not found');
+        } else if (note.tags.length === 0) {
+            responseToController = await httpResponse.notFound('No tags found for this note');
+        } else {
+            const tagsDTOs = note.tags.map(tag => new TagDTO(tag.id, tag.name, tag.color));
+            responseToController = await httpResponse.ok(tagsDTOs);
+        }
+    }
     return responseToController
 }
 
@@ -94,8 +117,8 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
 export const deletePlayerService = async (id: number) => {
     let responseToController = null
 
-    const data = await playersRepository.findPlayerById(id)
-    if (!data) {
+    const note = await playersRepository.findPlayerById(id)
+    if (!note) {
         responseToController = await httpResponse.noContent()
     } else {
         playersRepository.deletePlayer(id)
@@ -106,11 +129,11 @@ export const deletePlayerService = async (id: number) => {
 
 export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
     let responseToController = null
-    const data = await playersRepository.findPlayerById(id)
+    const note = await playersRepository.findPlayerById(id)
 
     if (Object.keys(bodyValue).length === 0) {
         responseToController = await httpResponse.badRequest()
-    } else if (!data) {
+    } else if (!note) {
         responseToController = await httpResponse.noContent()
     } else {
         const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)

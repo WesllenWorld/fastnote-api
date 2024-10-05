@@ -14,7 +14,11 @@ export const getAllNotesByUserIdRepository = async (userId: string): Promise<Not
 
 export const getNoteByUserIdRepository = async (userId: string, noteId: string): Promise<Note | null> => {
     const note = await noteRepository.findOne({ where: { id: noteId, user: { id: userId } } })
-    //return note
+    return note
+}
+
+export const getTagsByNoteIdRepository = async (userId: string, noteId: string): Promise<Note | null> => {
+    const note = await noteRepository.findOne({ where: { id: noteId, user: { id: userId } }, relations: ['tags'] })
     return note
 }
 
