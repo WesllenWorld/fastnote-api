@@ -38,6 +38,43 @@ export const getTagByUserIdService = async (userId: string, tagId: string) => {
     return responseToController
 }
 
+export const getTagByUserIdAndTagNameService = async (userId: string, tagName: string) => {
+    let responseToController = null
+
+    if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
+    } else if (!tagName || tagName.trim().length === 0) {
+        responseToController = await httpResponse.badRequest('Tag name cannot be empty');
+    } else {
+        const tag = await tagRepository.getTagByUserIdAndTagNameRepository(userId, tagName)
+        if (!tag) {
+            responseToController = await httpResponse.notFound('Tag not found')
+        } else {
+            const tagDTO = new TagDTO(tag.id, tag.name, tag.color)
+            responseToController = await httpResponse.ok(tagDTO)
+        }
+    }
+    return responseToController
+}
+
+export const getTagsByUserIdAndColorService = async (userId: string, tagColor: string) => {
+    let responseToController = null
+
+    if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
+    } else if (!tagColor || tagColor.trim().length === 0) {
+        responseToController = await httpResponse.badRequest('Tag color cannot be empty');
+    } else if (!/^[0-9A-Fa-f]{6}$/.test(tagColor)) {
+        responseToController = await httpResponse.badRequest('Tag color must be a valid hexadecimal color code');
+    } else {
+        const tags = await tagRepository.getTagsByUserIdAndColorRepository(userId, tagColor)
+
+        const tagsDTOs = tags.map(tag => new TagDTO(tag.id, tag.name, tag.color))
+        responseToController = await httpResponse.ok(tagsDTOs)
+    }
+    return responseToController
+}
+
 export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) => {
     let responseToController = null
 
@@ -60,7 +97,7 @@ export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) =>
                 responseToController = await httpResponse.notFound('User not found')
             } else {
 
-                const tagExists = await tagRepository.getTagByUserIdAndNameRepository(userId, newTagDTO.name)
+                const tagExists = await tagRepository.getTagByUserIdAndTagNameRepository(userId, newTagDTO.name)
                 if (tagExists) {
                     responseToController = await httpResponse.conflict(`Tag ${tagExists.name} already exists`)
                 } else {

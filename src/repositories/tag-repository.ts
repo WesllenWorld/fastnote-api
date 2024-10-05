@@ -14,9 +14,8 @@ export const getTagByUserIdRepository = async (userId: string, tagId: string): P
     return tag
 }
 
-export const getTagByUserIdAndNameRepository = async (userId: string, tagName: string): Promise<Tag | null> => {
+export const getTagByUserIdAndTagNameRepository = async (userId: string, tagName: string): Promise<Tag | null> => {
     const tag = await tagRepository.findOne({ where: { user: { id: userId }, name: tagName } })
-
     return tag
 }
 
@@ -25,10 +24,15 @@ export const getTagsByUserAndTagIdRepository = async (userId: string, tagIds: st
         where: {
             id: In(tagIds),
             user: { id: userId }
-             // Usando 'In' para buscar múltiplos IDs
+            
         }
     })
     return tags;
+}
+
+export const getTagsByUserIdAndColorRepository = async (userId: string, tagColor: string): Promise<Tag[]> => {
+    const tags = await tagRepository.find({ where: { user: { id: userId }, color: tagColor } })
+    return tags
 }
  
 export const postTagRepository = async (newTag: Tag) => {

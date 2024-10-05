@@ -76,7 +76,6 @@ export const getNotesByTagIdService = async (userId: string, tagId: string) => {
     } else {
         const notes = await notesRepository.getNotesByTagIdRepository(userId, tagId)
 
-
         const notesDTOs = notes.map(note => new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id)));
         responseToController = await httpResponse.ok(notesDTOs);
 

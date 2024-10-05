@@ -16,8 +16,18 @@ export const getTagByUserIdController = async (request: Request, response: Respo
     return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
-export const getTagByIdController = async (request: Request, response: Response) => {
+export const getTagByUserIdAndTagNameController = async (request: Request, response: Response) => {
+    const userId = request.params.userId
+    const tagName = request.params.tagName
+    const httpResponse = await tagsService.getTagByUserIdAndTagNameService(userId, tagName)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
+}
 
+export const getTagsByUserIdAndColorController = async (request: Request, response: Response) => {
+    const userId = request.params.userId
+    const tagColor = request.params.tagColor
+    const httpResponse = await tagsService.getTagsByUserIdAndColorService(userId, tagColor)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const postTagController = async (request: Request, response: Response) => {

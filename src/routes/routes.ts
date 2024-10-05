@@ -22,6 +22,8 @@ router.put('/notes/:userId/noteId', notesController.updateNoteController)
 //tag
 router.get('/tags/:userId', tagsController.getAllTagsByUserIdController)
 router.get('/tags/:userId/:tagId', tagsController.getTagByUserIdController)
+router.get('/tags/:userId/name/:tagName', tagsController.getTagByUserIdAndTagNameController)
+router.get('/tags/:userId/color/:tagColor', tagsController.getTagsByUserIdAndColorController)
 
 router.post('/tags/:userId', tagsController.postTagController)
 
