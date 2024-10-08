@@ -15,7 +15,7 @@ router.get('/notes/:userId/tags/:tagId', notesController.getNotesByTagIdControll
 
 router.post('/notes/:userId', notesController.postNoteController) 
 
-router.delete('/notes/:userId/noteId', notesController.deleteNoteController)
+router.delete('/notes/:userId/:noteId', notesController.deleteNoteByIdController)
 
 router.put('/notes/:userId/noteId', notesController.updateNoteController)
 

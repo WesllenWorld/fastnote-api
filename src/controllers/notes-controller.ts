@@ -39,8 +39,11 @@ export const postNoteController = async (request: Request, response: Response) =
     }
 }
 
-export const deleteNoteController = async (request: Request, response: Response) => {
-
+export const deleteNoteByIdController = async (request: Request, response: Response) => {
+    const userId = request.params.userId
+    const noteId = request.params.noteId
+    const httpResponse = await notesServices.deleteNoteByIdService(userId, noteId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const updateNoteController = async (request: Request, response: Response) => {

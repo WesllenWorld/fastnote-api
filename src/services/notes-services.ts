@@ -130,20 +130,27 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
     return responseToController
 }
 
-/*
-export const deletePlayerService = async (id: number) => {
+
+export const deleteNoteByIdService = async (userId: string, noteId: string) => {
     let responseToController = null
 
-    const note = await playersRepository.findPlayerById(id)
-    if (!note) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(noteId)) {
+        responseToController = await httpResponse.badRequest('Invalid note UUID provided')
+    }
+    else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        playersRepository.deletePlayer(id)
-        responseToController = await httpResponse.ok('Successfully deleted')
+        const note = await notesRepository.getNoteByUserIdRepository(userId, noteId)
+        if (!note) {
+            responseToController = await httpResponse.notFound('Note not found')
+        } else {
+            notesRepository.deleteNoteByIdRepository(userId, noteId)
+            responseToController = await httpResponse.ok('Note successfully deleted')
+        }
     }
     return responseToController
 }
-
+/*
 export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
     let responseToController = null
     const note = await playersRepository.findPlayerById(id)

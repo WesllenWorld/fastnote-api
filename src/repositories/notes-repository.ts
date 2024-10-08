@@ -30,3 +30,7 @@ export const getNotesByTagIdRepository = async (userId: string, tagId: string): 
 export const postNoteRepository = async (newNote: Note) => {
     await noteRepository.save(newNote)
 }
+
+export const deleteNoteByIdRepository = async (userId: string, noteId: string) => {
+    await noteRepository.delete({ id: noteId, user: { id: userId } })
+}
