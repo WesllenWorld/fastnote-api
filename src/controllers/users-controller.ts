@@ -19,7 +19,9 @@ export const postUserController = async (request: Request, response: Response) =
 }
 
 export const deleteUserByIdController = async (request: Request, response: Response) => {
-
+    const userId = request.params.userId
+    const httpResponse = await usersServices.deleteUserByIdService(userId)
+    response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const updateUserController = async (request: Request, response: Response) => {

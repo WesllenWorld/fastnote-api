@@ -23,3 +23,6 @@ export const postUserRepository = async (newUser: User) => {
     await userRepository.save(newUser)
 }
    
+export const deleteUserByIdRepository = async (userId: string) => {
+    await userRepository.delete({ id: userId })
+}
