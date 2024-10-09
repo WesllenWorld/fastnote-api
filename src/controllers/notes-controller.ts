@@ -33,10 +33,7 @@ export const postNoteController = async (request: Request, response: Response) =
     const userId = request.params.userId
     const newNote = new CreateNoteDTO(request.body.content, request.body.tags, request.body.userId)
     const httpResponse = await notesServices.postNoteService(userId, newNote)
-
-    if (httpResponse) {
-        response.status(httpResponse.statusCode).json(httpResponse.body)
-    }
+    response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const deleteNoteByIdController = async (request: Request, response: Response) => {
@@ -52,7 +49,7 @@ export const updateNoteController = async (request: Request, response: Response)
     const updatedNote = new CreateNoteDTO(request.body.content, request.body.tags, userId)
     const httpResponse = await notesServices.updateNoteService(userId, noteId, updatedNote)
 
-    if (httpResponse) {
-        response.status(httpResponse.statusCode).json(httpResponse.body)
-    }
+
+    response.status(httpResponse.statusCode).json(httpResponse.body)
+
 }

@@ -34,10 +34,7 @@ export const postTagController = async (request: Request, response: Response) =>
     const userId = request.params.userId
     const newTagDTO = new CreateTagDTO(request.body.name, request.body.color, request.body.userId)
     const httpResponse = await tagsService.postTagService(userId, newTagDTO)
-
-    if (httpResponse) {
-        response.status(httpResponse.statusCode).json(httpResponse.body)
-    }
+    response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const deleteTagByIdController = async (request: Request, response: Response) => {
