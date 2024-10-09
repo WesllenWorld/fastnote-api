@@ -47,5 +47,12 @@ export const deleteNoteByIdController = async (request: Request, response: Respo
 }
 
 export const updateNoteController = async (request: Request, response: Response) => {
+    const userId = request.params.userId
+    const noteId = request.params.noteId
+    const updatedNote = new CreateNoteDTO(request.body.content, request.body.tags, userId)
+    const httpResponse = await notesServices.updateNoteService(userId, noteId, updatedNote)
 
+    if (httpResponse) {
+        response.status(httpResponse.statusCode).json(httpResponse.body)
+    }
 }

@@ -34,3 +34,9 @@ export const postNoteRepository = async (newNote: Note) => {
 export const deleteNoteByIdRepository = async (userId: string, noteId: string) => {
     await noteRepository.delete({ id: noteId, user: { id: userId } })
 }
+
+export const updateNoteRepository = async (userId: string, noteId: string, updatedNote: Note) => {
+    //await noteRepository.update({ id: noteId, user: { id: userId } }, updatedNote)
+    console.log(updatedNote)
+    await noteRepository.save(updatedNote)
+}

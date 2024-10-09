@@ -34,10 +34,10 @@ export const getNoteByUserIdService = async (userId: string, noteId: string) => 
         const note = await notesRepository.getNoteByUserIdRepository(userId, noteId)
 
         if (!note) {
-            responseToController = await httpResponse.notFound('Note not found');
+            responseToController = await httpResponse.notFound('Note not found')
         } else {
             const noteDTO = new NoteDTO(note.id, note.content, note.tags.map(tag => tag.id));
-            responseToController = await httpResponse.ok(noteDTO);
+            responseToController = await httpResponse.ok(noteDTO)
         }
     }
     return responseToController
@@ -58,8 +58,8 @@ export const getTagsByNoteIdService = async (userId: string, noteId: string) => 
             responseToController = await httpResponse.notFound('Note not found');
         }
         else {
-            const tagsDTO = note.tags.map(tag => new TagDTO(tag.id, tag.name, tag.color));
-            responseToController = await httpResponse.ok(tagsDTO);
+            const tagsDTO = note.tags.map(tag => new TagDTO(tag.id, tag.name, tag.color))
+            responseToController = await httpResponse.ok(tagsDTO)
         }
     }
     return responseToController
@@ -96,7 +96,7 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
             const errorMessages = validationErrors.flatMap((error) => {
                 // Return first error message of each constraint
                 return error.constraints ? Object.values(error.constraints) : []
-            });
+            })
 
             responseToController = await httpResponse.badRequest(errorMessages)
         } else {
@@ -104,16 +104,16 @@ export const postNoteService = async (userId: string, newNoteDTO: CreateNoteDTO)
             if (!existingUser) {
                 responseToController = await httpResponse.notFound("User not found")
             } else {
-                let tags: Tag[] = [];
+                let tags: Tag[] = []
                 if (newNoteDTO.tags.length > 0) {
                     // Busca as tags com base no userId e nos tagIds passados
-                    tags = await tagRepository.getTagsByUserAndTagIdRepository(newNoteDTO.userId, newNoteDTO.tags);
+                    tags = await tagRepository.getTagsByUserAndTagIdRepository(newNoteDTO.userId, newNoteDTO.tags)
 
-                    const foundTagIds = tags.map(tag => tag.id);
-                    const missingTags = newNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId));
+                    const foundTagIds = tags.map(tag => tag.id)
+                    const missingTags = newNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId))
 
                     if (missingTags.length > 0) {
-                        responseToController = await httpResponse.notFound(`Tags with the following IDs were not found: ${missingTags.join(', ')}`);
+                        responseToController = await httpResponse.notFound(`Tags with the following IDs were not found: ${missingTags.join(', ')}`)
                     }
                 }
 
@@ -150,19 +150,57 @@ export const deleteNoteByIdService = async (userId: string, noteId: string) => {
     }
     return responseToController
 }
-/*
-export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
-    let responseToController = null
-    const note = await playersRepository.findPlayerById(id)
 
-    if (Object.keys(bodyValue).length === 0) {
-        responseToController = await httpResponse.badRequest()
-    } else if (!note) {
-        responseToController = await httpResponse.noContent()
+export const updateNoteService = async (userId: string, noteId: string, updatedNoteDTO: CreateNoteDTO) => {
+    let responseToController = null
+
+    if (!isUUID(noteId)) {
+        responseToController = await httpResponse.badRequest('Invalid note UUID provided')
+    }
+    else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)
-        responseToController = await httpResponse.ok(updatedPlayer)
+
+        const validationErrors = await validate(updatedNoteDTO)
+
+        if (validationErrors.length > 0) {
+            const errorMessages = validationErrors.flatMap((error) => {
+                // Return first error message of each constraint
+                return error.constraints ? Object.values(error.constraints) : []
+            })
+
+            responseToController = await httpResponse.badRequest(errorMessages)
+        } else {
+            // existing user
+            const note = await notesRepository.getNoteByUserIdRepository(userId, noteId)
+            //console.log(`note: ${note?.content}, ${note?.tags}, ${note?.user}, ${note?.id}`)
+            if (!note) {
+                responseToController = await httpResponse.notFound('Note not found')
+            } else {
+
+                let tags: Tag[] = []
+                if (updatedNoteDTO.tags.length > 0) {
+                    // Busca as tags com base no userId e nos tagIds passados
+                    tags = await tagRepository.getTagsByUserAndTagIdRepository(userId, updatedNoteDTO.tags);
+
+                    const foundTagIds = tags.map(tag => tag.id);
+                    const missingTags = updatedNoteDTO.tags.filter(tagId => !foundTagIds.includes(tagId));
+
+                    if (missingTags.length > 0) {
+                        responseToController = await httpResponse.notFound(`Tags with the following IDs were not found: ${missingTags.join(', ')}`);
+                    }
+                }
+
+                if (!responseToController) {
+                    const updatedNote = new Note(updatedNoteDTO.content, tags, note.user)
+                    updatedNote.id = note.id
+                    console.log(updatedNote)
+                    await notesRepository.updateNoteRepository(userId, noteId, updatedNote)
+                    responseToController = await httpResponse.ok('Note updated successfully')
+                }
+            }
+        }
     }
 
     return responseToController
-}*/
+}
