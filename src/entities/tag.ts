@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./user"
 
 import {
     Entity,
@@ -6,27 +6,27 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
-} from "typeorm";
+} from "typeorm"
 
 @Entity({name: "tags"})
 export class Tag {
 
     constructor(name: string, color: string, user: User) {
-        this.name = name;
-        this.color = color;
-        this.user = user;
+        this.name = name
+        this.color = color
+        this.user = user
     }
 
 
     @PrimaryGeneratedColumn("uuid")
-    id!: string;
+    id!: string
 
     @Column({
         length: 100,
         nullable: false,
         type: "varchar",
     })
-    name: string;
+    name: string
 
     @Column({
         length: 6,

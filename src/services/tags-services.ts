@@ -160,7 +160,7 @@ export const updateTagService = async (userId: string, tagId: string, updatedTag
                 } else {
                     tag.name = updatedTagDTO.name
                     tag.color = updatedTagDTO.color
-                    await tagRepository.updateTagRepository(userId, tagId, tag)
+                    await tagRepository.updateTagRepository(tag)
                     responseToController = await httpResponse.noContent()
                 }
             }

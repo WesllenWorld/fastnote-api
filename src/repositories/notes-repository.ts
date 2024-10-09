@@ -1,10 +1,6 @@
 import { Note } from "../entities/note"
-import { Tag } from "../entities/tag"
-import { User } from "../entities/user"
 import { AppDataSource } from "../db/data-source"
 
-const userRepository = AppDataSource.getRepository(User)
-const tagRepository = AppDataSource.getRepository(Tag)
 const noteRepository = AppDataSource.getRepository(Note)
 
 export const getAllNotesByUserIdRepository = async (userId: string): Promise<Note[]> => {
@@ -35,6 +31,6 @@ export const deleteNoteByIdRepository = async (userId: string, noteId: string) =
     await noteRepository.delete({ id: noteId, user: { id: userId } })
 }
 
-export const updateNoteRepository = async (userId: string, noteId: string, updatedNote: Note) => {
+export const updateNoteRepository = async (updatedNote: Note) => {
     await noteRepository.save(updatedNote)
 }

@@ -192,12 +192,11 @@ export const updateNoteService = async (userId: string, noteId: string, updatedN
                 if (!responseToController) {
                     note.content = updatedNoteDTO.content
                     note.tags = tags
-                    await notesRepository.updateNoteRepository(userId, noteId, note)
+                    await notesRepository.updateNoteRepository(note)
                     responseToController = await httpResponse.noContent()
                 }
             }
         }
     }
-
     return responseToController
 }
