@@ -131,19 +131,40 @@ export const deleteTagByIdService = async (userId: string, tagId: string) => {
     }
     return responseToController
 }
-/*
-export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
+
+export const updateTagService = async (userId: string, tagId: string, updatedTagDTO: CreateTagDTO) => {
     let responseToController = null
-    const data = await playersRepository.findPlayerById(id)
 
-    if (Object.keys(bodyValue).length === 0) {
-        responseToController = await httpResponse.badRequest()
-    } else if (!data) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(tagId)) {
+        responseToController = await httpResponse.badRequest('Invalid tag UUID provided')
+    } else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)
-        responseToController = await httpResponse.ok(updatedPlayer)
-    }
+        const tag = await tagRepository.getTagByUserIdRepository(userId, tagId)
+        if (!tag) {
+            responseToController = await httpResponse.notFound('Tag not found')
+        } else {
+            const validationErrors = await validate(updatedTagDTO)
 
+            if (validationErrors.length > 0) {
+                const errorMessages = validationErrors.flatMap((error) => {
+                    // Return first error message of each constraint
+                    return error.constraints ? Object.values(error.constraints) : []
+                });
+
+                responseToController = await httpResponse.badRequest(errorMessages)
+            } else {
+                const tagWithSameName = await tagRepository.getTagByUserIdAndTagNameRepository(userId, updatedTagDTO.name)
+                if (tagWithSameName && tagWithSameName.id !== tagId) {
+                    responseToController = await httpResponse.conflict(`Tag ${tagWithSameName.name} already exists`)
+                } else {
+                    tag.name = updatedTagDTO.name
+                    tag.color = updatedTagDTO.color
+                    await tagRepository.updateTagRepository(userId, tagId, tag)
+                    responseToController = await httpResponse.ok('Tag updated successfully')
+                }
+            }
+        }
+    }
     return responseToController
-}*/
+}

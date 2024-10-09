@@ -42,4 +42,8 @@ export const postTagRepository = async (newTag: Tag) => {
 export const deleteTagByIdRepository = async (userId: string, tagId: string) => {
     await tagRepository.delete({ user: { id: userId }, id: tagId })
 }
+
+export const updateTagRepository = async (userId: string, tagId: string, updatedTag: Tag) => {
+    await tagRepository.save(updatedTag)
+}
    

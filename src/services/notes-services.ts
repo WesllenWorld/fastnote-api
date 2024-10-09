@@ -190,9 +190,15 @@ export const updateNoteService = async (userId: string, noteId: string, updatedN
                 }
 
                 if (!responseToController) {
-                    const updatedNote = new Note(updatedNoteDTO.content, tags, note.user)
-                    updatedNote.id = note.id
-                    await notesRepository.updateNoteRepository(userId, noteId, updatedNote)
+
+                    //desnecessário esse objeto updatednote, poderia ser passado direto para o Note
+                    note.content = updatedNoteDTO.content
+                    note.tags = tags
+                    await notesRepository.updateNoteRepository(userId, noteId, note)
+
+                    //const updatedNote = new Note(updatedNoteDTO.content, tags, note.user)
+                    //updatedNote.id = note.id
+                    //await notesRepository.updateNoteRepository(userId, noteId, updatedNote)
                     responseToController = await httpResponse.ok('Note updated successfully')
                 }
             }
