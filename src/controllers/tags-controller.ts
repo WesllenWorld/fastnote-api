@@ -41,7 +41,10 @@ export const postTagController = async (request: Request, response: Response) =>
 }
 
 export const deleteTagByIdController = async (request: Request, response: Response) => {
-
+    const userId = request.params.userId
+    const tagId = request.params.tagId
+    const httpResponse = await tagsService.deleteTagByIdService(userId, tagId)
+    return response.status(httpResponse.statusCode).json(httpResponse.body)
 }
 
 export const updateTagController = async (request: Request, response: Response) => {

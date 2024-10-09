@@ -38,4 +38,8 @@ export const getTagsByUserIdAndColorRepository = async (userId: string, tagColor
 export const postTagRepository = async (newTag: Tag) => {
     await tagRepository.save(newTag)
 }
+
+export const deleteTagByIdRepository = async (userId: string, tagId: string) => {
+    await tagRepository.delete({ user: { id: userId }, id: tagId })
+}
    

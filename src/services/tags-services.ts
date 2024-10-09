@@ -112,20 +112,26 @@ export const postTagService = async (userId: string, newTagDTO: CreateTagDTO) =>
     return responseToController
 }
 
-/*
-export const deletePlayerService = async (id: number) => {
+
+export const deleteTagByIdService = async (userId: string, tagId: string) => {
     let responseToController = null
 
-    const data = await playersRepository.findPlayerById(id)
-    if (!data) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(tagId)) {
+        responseToController = await httpResponse.badRequest('Invalid tag UUID provided')
+    } else if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        playersRepository.deletePlayer(id)
-        responseToController = await httpResponse.ok('Successfully deleted')
+        const tag = await tagRepository.getTagByUserIdRepository(userId, tagId)
+        if (!tag) {
+            responseToController = await httpResponse.notFound('Tag not found')
+        } else {
+            await tagRepository.deleteTagByIdRepository(userId, tagId)
+            responseToController = await httpResponse.ok('Tag deleted successfully')
+        }
     }
     return responseToController
 }
-
+/*
 export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
     let responseToController = null
     const data = await playersRepository.findPlayerById(id)
