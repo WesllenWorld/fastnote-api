@@ -171,9 +171,7 @@ export const updateNoteService = async (userId: string, noteId: string, updatedN
 
             responseToController = await httpResponse.badRequest(errorMessages)
         } else {
-            // existing user
             const note = await notesRepository.getNoteByUserIdRepository(userId, noteId)
-            //console.log(`note: ${note?.content}, ${note?.tags}, ${note?.user}, ${note?.id}`)
             if (!note) {
                 responseToController = await httpResponse.notFound('Note not found')
             } else {
@@ -194,7 +192,6 @@ export const updateNoteService = async (userId: string, noteId: string, updatedN
                 if (!responseToController) {
                     const updatedNote = new Note(updatedNoteDTO.content, tags, note.user)
                     updatedNote.id = note.id
-                    console.log(updatedNote)
                     await notesRepository.updateNoteRepository(userId, noteId, updatedNote)
                     responseToController = await httpResponse.ok('Note updated successfully')
                 }
