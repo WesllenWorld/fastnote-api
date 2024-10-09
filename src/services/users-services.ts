@@ -71,19 +71,39 @@ export const deleteUserByIdService = async (userId: string) => {
     }
     return responseToController
 }
-/*
-export const updatePlayerService = async (id: number, bodyValue: StatisticsModel) => {
+
+export const updateUserService = async (userId: string, updatedUserDTO: CreateUserDTO) => {
     let responseToController = null
-    const data = await playersRepository.findPlayerById(id)
 
-    if (Object.keys(bodyValue).length === 0) {
-        responseToController = await httpResponse.badRequest()
-    } else if (!data) {
-        responseToController = await httpResponse.noContent()
+    if (!isUUID(userId)) {
+        responseToController = await httpResponse.badRequest('Invalid user UUID provided')
     } else {
-        const updatedPlayer = await playersRepository.findAndUpdatePlayer(id, bodyValue)
-        responseToController = await httpResponse.ok(updatedPlayer)
-    }
+        const validationErrors = await validate(updatedUserDTO)
 
+        if (validationErrors.length > 0) {
+            const errorMessages = validationErrors.flatMap((error) => {
+                // Return first error message of each constraint
+                return error.constraints ? Object.values(error.constraints) : []
+            })
+
+            responseToController = await httpResponse.badRequest(errorMessages)
+        } else {
+            const user = await userRepository.getUserByIdRepository(userId)
+            if (!user) {
+                responseToController = await httpResponse.notFound('User not found')
+            } else {
+                const existingUser = await userRepository.getUserByEmailRepository(updatedUserDTO.email)
+                if (existingUser && existingUser.id != userId) {
+                    responseToController = await httpResponse.conflict('Email already exists')
+                } else {
+                    user.name = updatedUserDTO.name
+                    user.email = updatedUserDTO.email
+                    user.password = await bcrypt.hash(updatedUserDTO.password, 10)
+                    await userRepository.updateUserRepository(user)
+                    responseToController = await httpResponse.noContent()
+                }
+            }
+        }
+    }
     return responseToController
-}*/
+}

@@ -22,5 +22,8 @@ export const deleteUserByIdController = async (request: Request, response: Respo
 }
 
 export const updateUserController = async (request: Request, response: Response) => {
-
+    const userId = request.params.userId
+    const updatedUser = new CreateUserDTO(request.body.name, request.body.email, request.body.password)
+    const httpResponse = await usersServices.updateUserService(userId, updatedUser)
+    response.status(httpResponse.statusCode).json(httpResponse.body)
 }

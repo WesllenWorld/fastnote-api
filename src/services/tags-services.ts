@@ -161,7 +161,7 @@ export const updateTagService = async (userId: string, tagId: string, updatedTag
                     tag.name = updatedTagDTO.name
                     tag.color = updatedTagDTO.color
                     await tagRepository.updateTagRepository(userId, tagId, tag)
-                    responseToController = await httpResponse.ok('Tag updated successfully')
+                    responseToController = await httpResponse.noContent()
                 }
             }
         }
