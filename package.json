@@ -6,12 +6,12 @@
     "start:dev": "tsx --env-file=.env src/server.ts",
     "start:watch": "tsx watch --env-file=.env src/server.ts",
     "dist": "tsup src",
-    "start:dist": "npm run dist && node --env-file=env dist/server.js"
+    "start:dist": "npm run dist && node --env-file=.env dist/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "WesllenWorld",
   "license": "ISC",
-  "description": "",
+  "description": "A note-taking app",
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.0",
@@ -20,6 +20,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@swc/core": "^1.7.35",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.7",

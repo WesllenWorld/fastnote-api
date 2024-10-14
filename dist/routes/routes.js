@@ -7,6 +7,10 @@ var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -23,6 +27,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -45,10 +50,12 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/application/app.ts
-var import_express2 = __toESM(require("express"));
-
 // src/routes/routes.ts
+var routes_exports = {};
+__export(routes_exports, {
+  default: () => routes_default
+});
+module.exports = __toCommonJS(routes_exports);
 var import_express = require("express");
 
 // src/services/notes-services.ts
@@ -1247,35 +1254,3 @@ router.post("/users", postUserController);
 router.delete("/users/:userId", deleteUserByIdController);
 router.put("/users/:userId", updateUserController);
 var routes_default = router;
-
-// src/application/app.ts
-var import_cors = __toESM(require("cors"));
-function createApp() {
-  const app2 = (0, import_express2.default)();
-  app2.use((0, import_express2.json)());
-  app2.use("/api", routes_default);
-  app2.use((0, import_cors.default)());
-  const corsOptions = {
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE"
-    ]
-  };
-  app2.use((0, import_cors.default)());
-  return app2;
-}
-__name(createApp, "createApp");
-var app_default = createApp;
-
-// src/server.ts
-var app = app_default();
-var port = process.env.PORT;
-AppDataSource.initialize().then(() => __async(exports, null, function* () {
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
-})).catch((error) => {
-  console.log(error);
-});

@@ -46,7 +46,7 @@ var __async = (__this, __arguments, generator) => {
 };
 
 // src/application/app.ts
-var import_express2 = __toESM(require("express"));
+var import_express2 = __toESM(require("express"), 1);
 
 // src/routes/routes.ts
 var import_express = require("express");
@@ -1055,7 +1055,7 @@ var updateTagController = /* @__PURE__ */ __name((request, response) => __async(
 
 // src/services/users-services.ts
 var import_class_validator5 = require("class-validator");
-var bcrypt = __toESM(require("bcrypt"));
+var bcrypt = __toESM(require("bcrypt"), 1);
 
 // src/dtos/user-dto.ts
 var _UserDTO = class _UserDTO {
@@ -1249,7 +1249,7 @@ router.put("/users/:userId", updateUserController);
 var routes_default = router;
 
 // src/application/app.ts
-var import_cors = __toESM(require("cors"));
+var import_cors = __toESM(require("cors"), 1);
 function createApp() {
   const app2 = (0, import_express2.default)();
   app2.use((0, import_express2.json)());
@@ -1272,7 +1272,7 @@ var app_default = createApp;
 // src/server.ts
 var app = app_default();
 var port = process.env.PORT;
-AppDataSource.initialize().then(() => __async(exports, null, function* () {
+AppDataSource.initialize().then(() => __async(void 0, null, function* () {
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
   });

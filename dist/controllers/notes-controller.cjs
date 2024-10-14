@@ -1,12 +1,14 @@
 "use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -15,14 +17,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -45,11 +40,18 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/application/app.ts
-var import_express2 = __toESM(require("express"));
-
-// src/routes/routes.ts
-var import_express = require("express");
+// src/controllers/notes-controller.ts
+var notes_controller_exports = {};
+__export(notes_controller_exports, {
+  deleteNoteByIdController: () => deleteNoteByIdController,
+  getAllNotesByUserIdController: () => getAllNotesByUserIdController,
+  getNoteByUserIdController: () => getNoteByUserIdController,
+  getNotesByTagIdController: () => getNotesByTagIdController,
+  getTagsByNoteIdController: () => getTagsByNoteIdController,
+  postNoteController: () => postNoteController,
+  updateNoteController: () => updateNoteController
+});
+module.exports = __toCommonJS(notes_controller_exports);
 
 // src/services/notes-services.ts
 var import_class_validator = require("class-validator");
@@ -355,61 +357,10 @@ var getUserByIdRepository = /* @__PURE__ */ __name((userId) => __async(void 0, n
   });
   return user;
 }), "getUserByIdRepository");
-var getUserByEmailRepository = /* @__PURE__ */ __name((email) => __async(void 0, null, function* () {
-  const user = yield userRepository.findOne({
-    where: {
-      email
-    }
-  });
-  return user;
-}), "getUserByEmailRepository");
-var postUserRepository = /* @__PURE__ */ __name((newUser) => __async(void 0, null, function* () {
-  yield userRepository.save(newUser);
-}), "postUserRepository");
-var deleteUserByIdRepository = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
-  yield userRepository.delete({
-    id: userId
-  });
-}), "deleteUserByIdRepository");
-var updateUserRepository = /* @__PURE__ */ __name((updatedUser) => __async(void 0, null, function* () {
-  yield userRepository.save(updatedUser);
-}), "updateUserRepository");
 
 // src/repositories/tag-repository.ts
 var import_typeorm5 = require("typeorm");
 var tagRepository = AppDataSource.getRepository(Tag);
-var getAllTagsByUserIdRepository = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
-  const tags = yield tagRepository.find({
-    where: {
-      user: {
-        id: userId
-      }
-    }
-  });
-  return tags;
-}), "getAllTagsByUserIdRepository");
-var getTagByUserIdRepository = /* @__PURE__ */ __name((userId, tagId) => __async(void 0, null, function* () {
-  const tag = yield tagRepository.findOne({
-    where: {
-      user: {
-        id: userId
-      },
-      id: tagId
-    }
-  });
-  return tag;
-}), "getTagByUserIdRepository");
-var getTagByUserIdAndTagNameRepository = /* @__PURE__ */ __name((userId, tagName) => __async(void 0, null, function* () {
-  const tag = yield tagRepository.findOne({
-    where: {
-      user: {
-        id: userId
-      },
-      name: tagName
-    }
-  });
-  return tag;
-}), "getTagByUserIdAndTagNameRepository");
 var getTagsByUserAndTagIdRepository = /* @__PURE__ */ __name((userId, tagIds) => __async(void 0, null, function* () {
   const tags = yield tagRepository.find({
     where: {
@@ -421,31 +372,6 @@ var getTagsByUserAndTagIdRepository = /* @__PURE__ */ __name((userId, tagIds) =>
   });
   return tags;
 }), "getTagsByUserAndTagIdRepository");
-var getTagsByUserIdAndColorRepository = /* @__PURE__ */ __name((userId, tagColor) => __async(void 0, null, function* () {
-  const tags = yield tagRepository.find({
-    where: {
-      user: {
-        id: userId
-      },
-      color: tagColor
-    }
-  });
-  return tags;
-}), "getTagsByUserIdAndColorRepository");
-var postTagRepository = /* @__PURE__ */ __name((newTag) => __async(void 0, null, function* () {
-  yield tagRepository.save(newTag);
-}), "postTagRepository");
-var deleteTagByIdRepository = /* @__PURE__ */ __name((userId, tagId) => __async(void 0, null, function* () {
-  yield tagRepository.delete({
-    user: {
-      id: userId
-    },
-    id: tagId
-  });
-}), "deleteTagByIdRepository");
-var updateTagRepository = /* @__PURE__ */ __name((updatedTag) => __async(void 0, null, function* () {
-  yield tagRepository.save(updatedTag);
-}), "updateTagRepository");
 
 // src/utils/http-status-code.ts
 var StatusCode = /* @__PURE__ */ function(StatusCode2) {
@@ -534,12 +460,6 @@ var noContent = /* @__PURE__ */ __name(() => __async(void 0, null, function* () 
     body: "no content"
   };
 }), "noContent");
-var conflict = /* @__PURE__ */ __name((data) => __async(void 0, null, function* () {
-  return {
-    statusCode: StatusCode.CONFLICT,
-    body: data
-  };
-}), "conflict");
 var badRequest = /* @__PURE__ */ __name((data) => __async(void 0, null, function* () {
   return {
     statusCode: StatusCode.BAD_REQUEST,
@@ -819,463 +739,13 @@ var updateNoteController = /* @__PURE__ */ __name((request, response) => __async
   const httpResponse = yield updateNoteService(userId, noteId, updatedNote);
   response.status(httpResponse.statusCode).json(httpResponse.body);
 }), "updateNoteController");
-
-// src/services/tags-services.ts
-var import_class_validator3 = require("class-validator");
-var getAllTagsByUserIdService = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const tags = yield getAllTagsByUserIdRepository(userId);
-    const tagsDTOs = tags.map((tag) => new TagDTO(tag.id, tag.name, tag.color));
-    responseToController = yield ok(tagsDTOs);
-  }
-  return responseToController;
-}), "getAllTagsByUserIdService");
-var getTagByUserIdService = /* @__PURE__ */ __name((userId, tagId) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(tagId)) {
-    responseToController = yield badRequest("Invalid tag UUID provided");
-  } else if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const tag = yield getTagByUserIdRepository(userId, tagId);
-    if (!tag) {
-      responseToController = yield notFound("Tag not found");
-    } else {
-      const tagDTO = new TagDTO(tag.id, tag.name, tag.color);
-      responseToController = yield ok(tagDTO);
-    }
-  }
-  return responseToController;
-}), "getTagByUserIdService");
-var getTagByUserIdAndTagNameService = /* @__PURE__ */ __name((userId, tagName) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else if (!tagName || tagName.trim().length === 0) {
-    responseToController = yield badRequest("Tag name cannot be empty");
-  } else {
-    const tag = yield getTagByUserIdAndTagNameRepository(userId, tagName);
-    if (!tag) {
-      responseToController = yield notFound("Tag not found");
-    } else {
-      const tagDTO = new TagDTO(tag.id, tag.name, tag.color);
-      responseToController = yield ok(tagDTO);
-    }
-  }
-  return responseToController;
-}), "getTagByUserIdAndTagNameService");
-var getTagsByUserIdAndColorService = /* @__PURE__ */ __name((userId, tagColor) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else if (!tagColor || tagColor.trim().length === 0) {
-    responseToController = yield badRequest("Tag color cannot be empty");
-  } else if (!/^[0-9A-Fa-f]{6}$/.test(tagColor)) {
-    responseToController = yield badRequest("Tag color must be a valid hexadecimal color code");
-  } else {
-    const tags = yield getTagsByUserIdAndColorRepository(userId, tagColor);
-    const tagsDTOs = tags.map((tag) => new TagDTO(tag.id, tag.name, tag.color));
-    responseToController = yield ok(tagsDTOs);
-  }
-  return responseToController;
-}), "getTagsByUserIdAndColorService");
-var postTagService = /* @__PURE__ */ __name((userId, newTagDTO) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const validationErrors = yield (0, import_class_validator3.validate)(newTagDTO);
-    if (validationErrors.length > 0) {
-      const errorMessages = validationErrors.flatMap((error) => {
-        return error.constraints ? Object.values(error.constraints) : [];
-      });
-      responseToController = yield badRequest(errorMessages);
-    } else {
-      const existingUser = yield getUserByIdRepository(userId);
-      if (!existingUser) {
-        responseToController = yield notFound("User not found");
-      } else {
-        const tagExists = yield getTagByUserIdAndTagNameRepository(userId, newTagDTO.name);
-        if (tagExists) {
-          responseToController = yield conflict(`Tag ${tagExists.name} already exists`);
-        } else {
-          const tag = new Tag(newTagDTO.name, newTagDTO.color, existingUser);
-          yield postTagRepository(tag);
-          responseToController = yield created("Tag created successfully");
-        }
-      }
-    }
-  }
-  return responseToController;
-}), "postTagService");
-var deleteTagByIdService = /* @__PURE__ */ __name((userId, tagId) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(tagId)) {
-    responseToController = yield badRequest("Invalid tag UUID provided");
-  } else if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const tag = yield getTagByUserIdRepository(userId, tagId);
-    if (!tag) {
-      responseToController = yield notFound("Tag not found");
-    } else {
-      yield deleteTagByIdRepository(userId, tagId);
-      responseToController = yield ok("Tag deleted successfully");
-    }
-  }
-  return responseToController;
-}), "deleteTagByIdService");
-var updateTagService = /* @__PURE__ */ __name((userId, tagId, updatedTagDTO) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator3.isUUID)(tagId)) {
-    responseToController = yield badRequest("Invalid tag UUID provided");
-  } else if (!(0, import_class_validator3.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const tag = yield getTagByUserIdRepository(userId, tagId);
-    if (!tag) {
-      responseToController = yield notFound("Tag not found");
-    } else {
-      const validationErrors = yield (0, import_class_validator3.validate)(updatedTagDTO);
-      if (validationErrors.length > 0) {
-        const errorMessages = validationErrors.flatMap((error) => {
-          return error.constraints ? Object.values(error.constraints) : [];
-        });
-        responseToController = yield badRequest(errorMessages);
-      } else {
-        const tagWithSameName = yield getTagByUserIdAndTagNameRepository(userId, updatedTagDTO.name);
-        if (tagWithSameName && tagWithSameName.id !== tagId) {
-          responseToController = yield conflict(`Tag ${tagWithSameName.name} already exists`);
-        } else {
-          tag.name = updatedTagDTO.name;
-          tag.color = updatedTagDTO.color;
-          yield updateTagRepository(tag);
-          responseToController = yield noContent();
-        }
-      }
-    }
-  }
-  return responseToController;
-}), "updateTagService");
-
-// src/dtos/create-tag-dto.ts
-var import_class_validator4 = require("class-validator");
-function _ts_decorate5(decorators, target, key, desc) {
-  var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-  else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-__name(_ts_decorate5, "_ts_decorate");
-function _ts_metadata5(k, v) {
-  if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
-__name(_ts_metadata5, "_ts_metadata");
-var _CreateTagDTO = class _CreateTagDTO {
-  constructor(name, color, userId) {
-    __publicField(this, "name");
-    __publicField(this, "color");
-    __publicField(this, "userId");
-    this.name = name;
-    this.color = color;
-    this.userId = userId;
-  }
-};
-__name(_CreateTagDTO, "CreateTagDTO");
-var CreateTagDTO = _CreateTagDTO;
-_ts_decorate5([
-  (0, import_class_validator4.IsNotEmpty)({
-    message: "Name is required"
-  }),
-  _ts_metadata5("design:type", String)
-], CreateTagDTO.prototype, "name", void 0);
-_ts_decorate5([
-  (0, import_class_validator4.IsNotEmpty)({
-    message: "Color is required"
-  }),
-  (0, import_class_validator4.Matches)(/^([A-Fa-f0-9]{6})$/, {
-    message: "Invalid color"
-  }),
-  _ts_metadata5("design:type", String)
-], CreateTagDTO.prototype, "color", void 0);
-_ts_decorate5([
-  (0, import_class_validator4.IsUUID)(),
-  (0, import_class_validator4.IsNotEmpty)({
-    message: "User ID in tag is required"
-  }),
-  _ts_metadata5("design:type", String)
-], CreateTagDTO.prototype, "userId", void 0);
-
-// src/controllers/tags-controller.ts
-var getAllTagsByUserIdController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const httpResponse = yield getAllTagsByUserIdService(userId);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "getAllTagsByUserIdController");
-var getTagByUserIdController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const tagId = request.params.tagId;
-  const httpResponse = yield getTagByUserIdService(userId, tagId);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "getTagByUserIdController");
-var getTagByUserIdAndTagNameController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const tagName = request.params.tagName;
-  const httpResponse = yield getTagByUserIdAndTagNameService(userId, tagName);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "getTagByUserIdAndTagNameController");
-var getTagsByUserIdAndColorController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const tagColor = request.params.tagColor;
-  const httpResponse = yield getTagsByUserIdAndColorService(userId, tagColor);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "getTagsByUserIdAndColorController");
-var postTagController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const newTagDTO = new CreateTagDTO(request.body.name, request.body.color, request.body.userId);
-  const httpResponse = yield postTagService(userId, newTagDTO);
-  response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "postTagController");
-var deleteTagByIdController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const tagId = request.params.tagId;
-  const httpResponse = yield deleteTagByIdService(userId, tagId);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "deleteTagByIdController");
-var updateTagController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const tagId = request.params.tagId;
-  const updatedTagDTO = new CreateTagDTO(request.body.name, request.body.color, request.body.userId);
-  const httpResponse = yield updateTagService(userId, tagId, updatedTagDTO);
-  return response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "updateTagController");
-
-// src/services/users-services.ts
-var import_class_validator5 = require("class-validator");
-var bcrypt = __toESM(require("bcrypt"));
-
-// src/dtos/user-dto.ts
-var _UserDTO = class _UserDTO {
-  constructor(id, name, email) {
-    __publicField(this, "id");
-    __publicField(this, "name");
-    __publicField(this, "email");
-    this.id = id;
-    this.name = name;
-    this.email = email;
-  }
-};
-__name(_UserDTO, "UserDTO");
-var UserDTO = _UserDTO;
-
-// src/services/users-services.ts
-var getUserByIdService = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator5.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const user = yield getUserByIdRepository(userId);
-    if (!user) {
-      responseToController = yield notFound("User not found");
-    } else {
-      const userDTO = new UserDTO(user.id, user.name, user.email);
-      responseToController = yield ok(userDTO);
-    }
-  }
-  return responseToController;
-}), "getUserByIdService");
-var postUserService = /* @__PURE__ */ __name((newUserDTO) => __async(void 0, null, function* () {
-  let responseToController = null;
-  const validationErrors = yield (0, import_class_validator5.validate)(newUserDTO);
-  if (validationErrors.length > 0) {
-    const errorMessages = validationErrors.flatMap((error) => {
-      return error.constraints ? Object.values(error.constraints) : [];
-    });
-    responseToController = yield badRequest(errorMessages);
-  } else {
-    if (validationErrors.length > 0) {
-      responseToController = yield badRequest("Invalid data provided");
-    } else {
-      const existingUser = yield getUserByEmailRepository(newUserDTO.email);
-      if (existingUser) {
-        responseToController = yield conflict("Email already exists");
-      } else {
-        const saltRounds = 10;
-        const newUser = new User(newUserDTO.name, newUserDTO.email, yield bcrypt.hash(newUserDTO.password, saltRounds));
-        yield postUserRepository(newUser);
-        responseToController = yield created("User created successfully");
-      }
-    }
-  }
-  return responseToController;
-}), "postUserService");
-var deleteUserByIdService = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator5.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const user = yield getUserByIdRepository(userId);
-    if (!user) {
-      responseToController = yield notFound("User not found");
-    } else {
-      yield deleteUserByIdRepository(userId);
-      responseToController = yield ok("User deleted successfully");
-    }
-  }
-  return responseToController;
-}), "deleteUserByIdService");
-var updateUserService = /* @__PURE__ */ __name((userId, updatedUserDTO) => __async(void 0, null, function* () {
-  let responseToController = null;
-  if (!(0, import_class_validator5.isUUID)(userId)) {
-    responseToController = yield badRequest("Invalid user UUID provided");
-  } else {
-    const validationErrors = yield (0, import_class_validator5.validate)(updatedUserDTO);
-    if (validationErrors.length > 0) {
-      const errorMessages = validationErrors.flatMap((error) => {
-        return error.constraints ? Object.values(error.constraints) : [];
-      });
-      responseToController = yield badRequest(errorMessages);
-    } else {
-      const user = yield getUserByIdRepository(userId);
-      if (!user) {
-        responseToController = yield notFound("User not found");
-      } else {
-        const existingUser = yield getUserByEmailRepository(updatedUserDTO.email);
-        if (existingUser && existingUser.id != userId) {
-          responseToController = yield conflict("Email already exists");
-        } else {
-          user.name = updatedUserDTO.name;
-          user.email = updatedUserDTO.email;
-          user.password = yield bcrypt.hash(updatedUserDTO.password, 10);
-          yield updateUserRepository(user);
-          responseToController = yield noContent();
-        }
-      }
-    }
-  }
-  return responseToController;
-}), "updateUserService");
-
-// src/dtos/create-user-dto.ts
-var import_class_validator6 = require("class-validator");
-function _ts_decorate6(decorators, target, key, desc) {
-  var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-  else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-__name(_ts_decorate6, "_ts_decorate");
-function _ts_metadata6(k, v) {
-  if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
-__name(_ts_metadata6, "_ts_metadata");
-var _CreateUserDTO = class _CreateUserDTO {
-  constructor(name, email, password) {
-    __publicField(this, "name");
-    __publicField(this, "email");
-    __publicField(this, "password");
-    this.name = name;
-    this.email = email;
-    this.password = password;
-  }
-};
-__name(_CreateUserDTO, "CreateUserDTO");
-var CreateUserDTO = _CreateUserDTO;
-_ts_decorate6([
-  (0, import_class_validator6.IsNotEmpty)({
-    message: "Name is required"
-  }),
-  _ts_metadata6("design:type", String)
-], CreateUserDTO.prototype, "name", void 0);
-_ts_decorate6([
-  (0, import_class_validator6.IsEmail)({}, {
-    message: "Invalid email address"
-  }),
-  _ts_metadata6("design:type", String)
-], CreateUserDTO.prototype, "email", void 0);
-_ts_decorate6([
-  (0, import_class_validator6.MinLength)(4, {
-    message: "Password must have at least 4 characters"
-  }),
-  _ts_metadata6("design:type", String)
-], CreateUserDTO.prototype, "password", void 0);
-
-// src/controllers/users-controller.ts
-var getUserByIdController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const httpResponse = yield getUserByIdService(userId);
-  response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "getUserByIdController");
-var postUserController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const newUser = new CreateUserDTO(request.body.name, request.body.email, request.body.password);
-  const httpResponse = yield postUserService(newUser);
-  response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "postUserController");
-var deleteUserByIdController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const httpResponse = yield deleteUserByIdService(userId);
-  response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "deleteUserByIdController");
-var updateUserController = /* @__PURE__ */ __name((request, response) => __async(void 0, null, function* () {
-  const userId = request.params.userId;
-  const updatedUser = new CreateUserDTO(request.body.name, request.body.email, request.body.password);
-  const httpResponse = yield updateUserService(userId, updatedUser);
-  response.status(httpResponse.statusCode).json(httpResponse.body);
-}), "updateUserController");
-
-// src/routes/routes.ts
-var router = (0, import_express.Router)();
-router.get("/notes/:userId", getAllNotesByUserIdController);
-router.get("/notes/:userId/:noteId", getNoteByUserIdController);
-router.get("/notes/:userId/:noteId/tags", getTagsByNoteIdController);
-router.get("/notes/:userId/tags/:tagId", getNotesByTagIdController);
-router.post("/notes/:userId", postNoteController);
-router.delete("/notes/:userId/:noteId", deleteNoteByIdController);
-router.put("/notes/:userId/:noteId", updateNoteController);
-router.get("/tags/:userId", getAllTagsByUserIdController);
-router.get("/tags/:userId/:tagId", getTagByUserIdController);
-router.get("/tags/:userId/name/:tagName", getTagByUserIdAndTagNameController);
-router.get("/tags/:userId/color/:tagColor", getTagsByUserIdAndColorController);
-router.post("/tags/:userId", postTagController);
-router.delete("/tags/:userId/:tagId", deleteTagByIdController);
-router.put("/tags/:userId/:tagId", updateTagController);
-router.get("/users/:userId", getUserByIdController);
-router.post("/users", postUserController);
-router.delete("/users/:userId", deleteUserByIdController);
-router.put("/users/:userId", updateUserController);
-var routes_default = router;
-
-// src/application/app.ts
-var import_cors = __toESM(require("cors"));
-function createApp() {
-  const app2 = (0, import_express2.default)();
-  app2.use((0, import_express2.json)());
-  app2.use("/api", routes_default);
-  app2.use((0, import_cors.default)());
-  const corsOptions = {
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE"
-    ]
-  };
-  app2.use((0, import_cors.default)());
-  return app2;
-}
-__name(createApp, "createApp");
-var app_default = createApp;
-
-// src/server.ts
-var app = app_default();
-var port = process.env.PORT;
-AppDataSource.initialize().then(() => __async(exports, null, function* () {
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
-})).catch((error) => {
-  console.log(error);
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  deleteNoteByIdController,
+  getAllNotesByUserIdController,
+  getNoteByUserIdController,
+  getNotesByTagIdController,
+  getTagsByNoteIdController,
+  postNoteController,
+  updateNoteController
 });
