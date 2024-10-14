@@ -271,11 +271,11 @@ var AppDataSource = new import_typeorm4.DataSource({
   synchronize: true,
   //logging logs sql command on the treminal
   logging: false,
+  //entities: ["src/entities/*{.ts,.js}"],
   entities: [
-    "src/entities/*{.ts,.js}"
-  ],
-  migrations: [
-    "src/db/migrations/*{.ts,.js}"
+    User,
+    Note,
+    Tag
   ]
 });
 

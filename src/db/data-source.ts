@@ -1,5 +1,8 @@
-import "reflect-metadata";
-import { DataSource } from "typeorm";
+import { Tag } from "../entities/tag";
+import { User } from "../entities/user";
+import { Note } from "../entities/note";
+import "reflect-metadata"
+import { DataSource } from "typeorm"
 
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
   process.env;
@@ -13,8 +16,8 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE,
 
   synchronize: true,
-//logging logs sql command on the treminal
+  //logging logs sql command on the treminal
   logging: false,
-  entities: ["src/entities/*{.ts,.js}"],
-  migrations: ["src/db/migrations/*{.ts,.js}"],
-});
+  //entities: ["src/entities/*{.ts,.js}"],
+  entities: [User, Note, Tag],
+})

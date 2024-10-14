@@ -190,11 +190,79 @@ Tag = _ts_decorate2([
   ])
 ], Tag);
 
+// src/entities/note.ts
+var import_typeorm3 = require("typeorm");
+function _ts_decorate3(decorators, target, key, desc) {
+  var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+  else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+__name(_ts_decorate3, "_ts_decorate");
+function _ts_metadata3(k, v) {
+  if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+}
+__name(_ts_metadata3, "_ts_metadata");
+var _Note = class _Note {
+  constructor(content, tags, user) {
+    __publicField(this, "id");
+    __publicField(this, "content");
+    __publicField(this, "tags");
+    __publicField(this, "user");
+    this.content = content;
+    this.tags = tags;
+    this.user = user;
+  }
+};
+__name(_Note, "Note");
+var Note = _Note;
+_ts_decorate3([
+  (0, import_typeorm3.PrimaryGeneratedColumn)("uuid"),
+  _ts_metadata3("design:type", String)
+], Note.prototype, "id", void 0);
+_ts_decorate3([
+  (0, import_typeorm3.Column)({
+    length: 1e3,
+    nullable: false,
+    type: "varchar"
+  }),
+  _ts_metadata3("design:type", String)
+], Note.prototype, "content", void 0);
+_ts_decorate3([
+  (0, import_typeorm3.ManyToMany)(() => Tag, {
+    eager: true,
+    nullable: true
+  }),
+  (0, import_typeorm3.JoinTable)(),
+  _ts_metadata3("design:type", Array)
+], Note.prototype, "tags", void 0);
+_ts_decorate3([
+  (0, import_typeorm3.ManyToOne)(() => User, (user) => user.id, {
+    nullable: false,
+    onDelete: "CASCADE"
+  }),
+  (0, import_typeorm3.JoinColumn)({
+    name: "user_id"
+  }),
+  _ts_metadata3("design:type", typeof User === "undefined" ? Object : User)
+], Note.prototype, "user", void 0);
+Note = _ts_decorate3([
+  (0, import_typeorm3.Entity)({
+    name: "notes"
+  }),
+  _ts_metadata3("design:type", Function),
+  _ts_metadata3("design:paramtypes", [
+    String,
+    Array,
+    typeof User === "undefined" ? Object : User
+  ])
+], Note);
+
 // src/db/data-source.ts
 var import_reflect_metadata = require("reflect-metadata");
-var import_typeorm3 = require("typeorm");
+var import_typeorm4 = require("typeorm");
 var { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } = process.env;
-var AppDataSource = new import_typeorm3.DataSource({
+var AppDataSource = new import_typeorm4.DataSource({
   type: process.env.DB_TYPE,
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || "5432"),
@@ -204,11 +272,11 @@ var AppDataSource = new import_typeorm3.DataSource({
   synchronize: true,
   //logging logs sql command on the treminal
   logging: false,
+  //entities: ["src/entities/*{.ts,.js}"],
   entities: [
-    "src/entities/*{.ts,.js}"
-  ],
-  migrations: [
-    "src/db/migrations/*{.ts,.js}"
+    User,
+    Note,
+    Tag
   ]
 });
 
@@ -224,7 +292,7 @@ var getUserByIdRepository = /* @__PURE__ */ __name((userId) => __async(void 0, n
 }), "getUserByIdRepository");
 
 // src/repositories/tag-repository.ts
-var import_typeorm4 = require("typeorm");
+var import_typeorm5 = require("typeorm");
 var tagRepository = AppDataSource.getRepository(Tag);
 var getAllTagsByUserIdRepository = /* @__PURE__ */ __name((userId) => __async(void 0, null, function* () {
   const tags = yield tagRepository.find({
