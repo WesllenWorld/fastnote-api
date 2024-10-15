@@ -1,20 +1,16 @@
 {
-    "build": {
-        "commands": {
-            "build": "npm run dist"
-        },
-        "outputDirectory": "dist"
-    },
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/"
-        }
-    ],
+    "version": 2,
+    "builds": [{
+        
+        "src": "dist/api/index.js",
+        "use": "@vercel/node",
+        "config": { "includeFiles": ["dist/**"] }
+        
+    }],
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "/"
+            "src": "/api(.*)",
+            "dest": "dist/api/index.js"
         }
     ]
 }

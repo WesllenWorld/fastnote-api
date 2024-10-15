@@ -5,8 +5,8 @@
   "scripts": {
     "start:dev": "tsx --env-file=.env src/api/index.ts",
     "start:watch": "tsx watch --env-file=.env src/api/index.ts",
-    "dist": "tsup src",
-    "start:dist": "npm run dist && node --env-file=.env dist/api/index.js",
+    "build": "tsup src",
+    "start:dist": "npm run build && node --env-file=.env dist/api/index.js",
     "start": "node --env-file=.env dist/api/index.js"
   },
   "keywords": [],
