@@ -1269,7 +1269,7 @@ function createApp() {
 __name(createApp, "createApp");
 var app_default = createApp;
 
-// src/server.ts
+// src/api/index.ts
 var app = app_default();
 var port = process.env.PORT;
 AppDataSource.initialize().then(() => __async(exports, null, function* () {

@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start:dev": "tsx --env-file=.env src/server.ts",
-    "start:watch": "tsx watch --env-file=.env src/server.ts",
+    "start:dev": "tsx --env-file=.env src/api/index.ts",
+    "start:watch": "tsx watch --env-file=.env src/api/index.ts",
     "dist": "tsup src",
-    "start:dist": "npm run dist && node --env-file=.env dist/server.js",
-    "start": "node --env-file=.env dist/server.js"
+    "start:dist": "npm run dist && node --env-file=.env dist/api/index.js",
+    "start": "node --env-file=.env dist/api/index.js"
   },
   "keywords": [],
   "author": "WesllenWorld",

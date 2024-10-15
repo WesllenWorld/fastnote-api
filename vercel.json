@@ -1,10 +1,20 @@
 {
-    
+    "build": {
+        "commands": {
+            "build": "npm run dist"
+        },
+        "outputDirectory": "dist"
+    },
+    "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "/"
+        }
+    ],
     "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "dist/server.js"
-      }
+        {
+            "src": "/api/(.*)",
+            "dest": "/"
+        }
     ]
-  }
-  
+}

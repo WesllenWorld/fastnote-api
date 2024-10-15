@@ -1,5 +1,5 @@
-import createApp from './application/app'
-import { AppDataSource } from './db/data-source'
+import createApp from '../application/app'
+import { AppDataSource } from '../db/data-source'
 //import "reflect-metadata"
 
 const app = createApp()
