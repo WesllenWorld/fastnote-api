@@ -1,17 +1,9 @@
 {
-    "build": {
-      "env": {
-        "YOUR_ENV_VAR": "value"
-      },
-      "commands": {
-        "build": "npm run dist"
-      },
-      "outputDirectory": "dist"
-    },
+    
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "/server.js"
+        "src": "/api/(.*)",
+        "dest": "dist/server.js"
       }
     ]
   }
